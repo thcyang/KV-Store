@@ -3,6 +3,7 @@
 Group Members:  
  - [Jiuzhi Qi](mailto:qijiuzhi@gwu.edu)  
  - [Tong Yang](mailto:yangtong@gwu.edu)
+ - [Lijun Liu](mailto:lijun@gwu.edu)
 
 Extra Features:
  - feature 1
