@@ -1,7 +1,7 @@
 # KV Store
 
 Group Members:  
- - Jiuzhi Qi [qijiuzhi@gwu.edu](mailto:qijiuzhi@gwu.edu)  
+ - [Jiuzhi Qi](mailto:qijiuzhi@gwu.edu)  
  - name 2
 
 Extra Features:
