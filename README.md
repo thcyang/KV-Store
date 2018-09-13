@@ -2,7 +2,7 @@
 
 Group Members:  
  - [Jiuzhi Qi](mailto:qijiuzhi@gwu.edu)  
- - name 2
+ - [Tong Yang](mailto:yangtong@gwu.edu)
 
 Extra Features:
  - feature 1
