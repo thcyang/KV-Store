@@ -43,8 +43,8 @@ public class Client {
     private static List<Pair> pairs = new ArrayList<>();
     private static String host;
     private static String op;
-    int portnum = 5555;
-    int portnum2 = 5556;
+    int portnum4U = 5555;
+    int portnum4T = 5556;
 
     private static void setHost(String host) {
         Client.host = host;
@@ -112,10 +112,30 @@ public class Client {
 
     private static void sendByTCP() {
        try{
-         Socket socket = new Socket(host,portnum2);
+         Socket socket = new Socket(host,portnum4T);
          PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-         out.println(list.get(0));
-         out.println(list.get(1));
+         BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+         String str = null;
+         out.println(op);
+         switch(op) {
+           case "set":
+                out.println(list.get(0));
+                out.println(list.get(1));
+                str = in.readLine();
+                System.out.println(str);
+                break;
+           
+           case "get":
+                out.println(list.get(0));
+                str = in.readLine();
+                System.out.println(str);
+                break;
+           
+           case "stats":
+                str = in.readLine();
+                System.out.println(str);
+                break;
+         }     
          socket.close();
        }
        catch (IOException){
@@ -126,12 +146,42 @@ public class Client {
     private static void sendByUDP() {
         try {
           DatagramSocket socket = new DatagramSocket();
-          byte[] key = list.get(0).getBytes();//byte[] key = pairs.get(0).getKey().getBytes();
-          byte[] value = list.get(1).getBytes();
-          DatagramPacket packet4k = new DatagramPacket (key, key.length, InetAddress.getByName(host), portnum);
-          DatagramPacket packet4v = new DatagramPacket (value, value.length, InetAddress.getByName(host), portnum);
-          socket.send(packet4k);
-          socket.send(packet4v);
+          byte[] o = op.getBytes();
+          byte[] buf = new byte[1024];
+          DatagramPacket packet4op = new DatagramPacket(o, o.length, InetAddress.getByName(host), portnum4U);
+          DatagramPacket rece = new DatagramPacket(buf, buf.length);
+          String str = null;
+          socket.send(packet4op);
+          
+          switch (op){
+            case "set":
+               byte[] key = list.get(0).getBytes();//byte[] key = pairs.get(0).getKey().getBytes();
+               byte[] value = list.get(1).getBytes();
+               DatagramPacket packet4k = new DatagramPacket(key, key.length, InetAddress.getByName(host), portnum4U);
+               DatagramPacket packet4v = new DatagramPacket(value, value.length, InetAddress.getByName(host), portnum4U);
+               socket.send(packet4k);
+               socket.send(packet4v);
+               socket.receive(rece);
+               str = new String(rece.getData(), 0 ,rece.getLength());
+               System.out.println(str);
+               break;
+              
+           case "get":
+                byte[] key4g = list.get(0).getBytes();
+                DatagramPacket packet4g = new DatagramPacket(key4g, key4g.length, InetAddress.getByName(host), portnum4U);
+                socket.send(packet4g);
+                socket.receive(rece);
+                str = new String(rece.getData(), 0 ,rece.getLength());
+                System.out.println(str);
+                break;
+           
+           case "stats":
+                socket.receive(rece);
+                str = new String(rece.getData(), 0 ,rece.getLength());
+                System.out.println(str);
+                break;   
+          }
+          
           socket.close();
         }
         catch (IOException){
@@ -140,8 +190,7 @@ public class Client {
     }
 
     private static void genPairs(List<String> list) {
-         Iterator it = list.iterator();
-         while(it.hasNext()){
+         for(Iterator<String> it = list.iterator(); it.hasNext(); ){
            String key = it.next();
            if(it.hasNext()){
              String value = it.next();
