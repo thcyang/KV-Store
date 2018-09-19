@@ -3,26 +3,6 @@ import java.util.List;
 import java.net.*;
 import java.io.*;
 
-class Pair {
-    private String key;
-    private String value;
-
-    public Pair(String key, String value) {
-        this.key = key;
-        this.value = value;
-        System.out.println("Pair Constructor");
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public String getValue() {
-        return value;
-    }
-}
-
-
 /*
  * client usage: java client <server> <protocol> <operation> <key> <value>...
  * it supports multiple pairs of key and value
@@ -80,20 +60,16 @@ public class Client {
                 break;
             default:
                 showUsage();
-                return;
         }
 
         setHost(args[0]);
         setOp(args[2]);
 
-        // Stores the keys and values in the list in order
+        // Stores the keys and/or values in the list in order
         List<String> list = new ArrayList<>();
         for (int i = 3; i < args.length; i++) {
             list.add(args[i]);
         }
-
-        // Generates Pair objects and store them in  List<Pair> pairs
-        genPairs(list);
 
         // Determines which protocol will be used to transport data
         switch (args[1]) {
@@ -189,18 +165,9 @@ public class Client {
         }
     }
 
-    private static void genPairs(List<String> list) {
-         for(Iterator<String> it = list.iterator(); it.hasNext(); ){
-           String key = it.next();
-           if(it.hasNext()){
-             String value = it.next();
-             pairs.add(new Pair(key, value));
-           }
-         }
-    }
-
     private static void showUsage() {
 
+        return;
     }
 }
 
