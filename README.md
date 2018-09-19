@@ -7,7 +7,7 @@ Group Members:
  - [Xianquan Liao](mailto:xianquanliao@gwu.edu)
 
 Extra Features:
- - feature 1
+ - Feature 1: Support a fixed sized data store with an eviction policy(LRU).
  - feature 2
 
  ## Protocol Description
