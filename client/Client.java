@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.net.*;
+import java.io.*;
 
 class Pair {
     private String key;
@@ -41,6 +43,8 @@ public class Client {
     private static List<Pair> pairs = new ArrayList<>();
     private static String host;
     private static String op;
+    int portnum = 5555;
+    int portnum2 = 5556;
 
     private static void setHost(String host) {
         Client.host = host;
@@ -107,15 +111,43 @@ public class Client {
     }
 
     private static void sendByTCP() {
-
+       try{
+         Socket socket = new Socket(host,portnum2);
+         PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+         out.println(list.get(0));
+         out.println(list.get(1));
+         socket.close();
+       }
+       catch (IOException){
+          System.err.println("Sending Failed!");
+       }
     }
 
     private static void sendByUDP() {
-
+        try {
+          DatagramSocket socket = new DatagramSocket();
+          byte[] key = list.get(0).getBytes();//byte[] key = pairs.get(0).getKey().getBytes();
+          byte[] value = list.get(1).getBytes();
+          DatagramPacket packet4k = new DatagramPacket (key, key.length, InetAddress.getByName(host), portnum);
+          DatagramPacket packet4v = new DatagramPacket (value, value.length, InetAddress.getByName(host), portnum);
+          socket.send(packet4k);
+          socket.send(packet4v);
+          socket.close();
+        }
+        catch (IOException){
+          System.err.println("Sending Failed!");
+        }
     }
 
     private static void genPairs(List<String> list) {
-
+         Iterator it = list.iterator();
+         while(it.hasNext()){
+           String key = it.next();
+           if(it.hasNext()){
+             String value = it.next();
+             pairs.add(new Pair(key, value));
+           }
+         }
     }
 
     private static void showUsage() {
