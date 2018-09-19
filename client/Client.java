@@ -65,9 +65,9 @@ public class Client {
         setHost(args[0]);
         setOp(args[2]);
 
-        // Stores the keys and/or values in the list in order
+        // Stores the operation as well as keys and/or values in the list in order
         List<String> list = new ArrayList<>();
-        for (int i = 3; i < args.length; i++) {
+        for (int i = 2; i < args.length; i++) {
             list.add(args[i]);
         }
 
@@ -168,6 +168,10 @@ public class Client {
     private static void showUsage() {
 
         return;
+    }
+
+    private static String genMessage() {
+
     }
 }
 
