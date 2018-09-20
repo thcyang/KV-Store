@@ -8,7 +8,7 @@ public class TCPHandlerFactory implements Runnable {
     private boolean listenning = true;
     private int port = 5556;
     private Map<String, String> map;
-    private Socket socket;
+    private ServerSocket serverSocket;
 
     private TCPHandlerFactory() {
     }
