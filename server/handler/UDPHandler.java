@@ -3,9 +3,11 @@ package handler;
 import java.util.Map;
 import java.net.*;
 import java.io.*;
+import handler.LRUCache;
 
 public class UDPHandler extends Handler implements Runnable {
     private Map<String, String> map;
+    private LRUCache<String, String> lruCache;
     private DatagramPacket packet;
 
     public UDPHandler(Map<String, String> map, DatagramPacket packet) {
@@ -27,6 +29,7 @@ public class UDPHandler extends Handler implements Runnable {
                     String key = strs[1];
                     String value = strs[2];
                     map.put(key, value);
+                    //lruCache.set(key, value);
                     buf = "Set Success.".getBytes();
                     DatagramPacket pack = new DatagramPacket(buf, buf.length, addr, portnum);
                     socket.send(pack);
@@ -35,6 +38,7 @@ public class UDPHandler extends Handler implements Runnable {
                 case "get":
                     String key4g = strs[1];
                     String v = map.get(key4g);
+                    //String v = lruCache.get(key4g);
                     String s = "Value for \"" + key4g + "\" is: " + v;
                     buf = s.getBytes();
                     DatagramPacket pack2 = new DatagramPacket(buf, buf.length, addr, portnum);
@@ -51,6 +55,9 @@ public class UDPHandler extends Handler implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void setLruCache(LRUCache<String, String> lruCache) {
+	this.lruCache = lruCache;
     }
 }
 

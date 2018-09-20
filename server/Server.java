@@ -23,6 +23,8 @@ public class Server {
       
 	LRUCache<String, String> lruCache = new LRUCache<String, String>(5);
 	TCPHandlerFactory.getInstance().setLruCache(lruCache);
+        UDPHandlerFactory.getInstance().setLruCache(lruCache);
+
         TCPHandlerFactory.getInstance().setMap(map);
         UDPHandlerFactory.getInstance().setMap(map);
 
