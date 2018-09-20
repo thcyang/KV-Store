@@ -127,7 +127,7 @@ public class Client {
         try {
             DatagramSocket socket = new DatagramSocket();
             byte[] me = message.getBytes();
-            byte[] buf = new byte[1024];
+            byte[] buf = new byte[1024*64];
             DatagramPacket packet = new DatagramPacket(me, me.length, InetAddress.getByName(host), portnum4U);
             DatagramPacket rece = new DatagramPacket(buf, buf.length);
             socket.send(packet);

@@ -1,6 +1,7 @@
 import java.util.Map;
 import java.net.*;
 import java.io.*;
+import handler.UDPHandler;
 
 public class UDPHandlerFactory implements Runnable {
     private static UDPHandlerFactory ourInstance = new UDPHandlerFactory();
@@ -29,41 +30,12 @@ public class UDPHandlerFactory implements Runnable {
         }
         while (listenning) {
             try{
-                byte[] me = new byte[1024];
-                byte[] buf = null;
+                byte[] me = new byte[1024*64];
                 DatagramPacket packet = new DatagramPacket(me, me.length);
                 socket.receive(packet);
-                String message = new String(packet.getData(), 0, packet.getLength());
-                InetAddress addr = packet.getAddress();
-                int portnum = packet.getPort();
-                String[] strs = message.split("\\r?\\n");
-
-                switch (strs[0]){
-                    case "set":
-                        String key = strs[1];
-                        String value = strs[2];
-                        map.put(key,value);
-                        buf = "Set Success.".getBytes();
-                        DatagramPacket pack = new DatagramPacket(buf, buf.length, addr, portnum);
-                        socket.send(pack);
-                        break;
-
-                    case "get":
-                        String key4g = strs[1];
-                        String v = map.get(key4g);
-                        String s = "Value for \"" +key4g+ "\" is \"" +v+"\".";
-                        buf = s.getBytes();
-                        DatagramPacket pack2 = new DatagramPacket(buf, buf.length, addr, portnum);
-                        socket.send(pack2);
-                        break;
-
-                    case "stats":
-                        String str = "Count of objects currently stored in the KV store: "+ map.size();
-                        buf = str.getBytes();
-                        DatagramPacket pack3 = new DatagramPacket(buf, buf.length, addr, portnum);
-                        socket.send(pack3);
-                        break;
-                }
+                UDPHandler udp = new UDPHandler(map, packet);
+                new Thread(udp).start();
+              
                 /****
                 byte[] o = new byte[1024];
                 byte[] buf = null;
