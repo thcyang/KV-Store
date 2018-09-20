@@ -13,6 +13,9 @@ public class LRUCache<KeyType, ValueType> {
         this.capacity = capacity;
         len = 0;
     }
+    public int size() {
+	return len;
+    }
 
     public ValueType get(KeyType key) {
         if (map.containsKey(key)) {
@@ -79,6 +82,15 @@ public class LRUCache<KeyType, ValueType> {
                 map.put(key, newNode);
             }
         }
+    }
+
+    public void logPrint() {
+	DLNode cur = head;
+	while (cur != null) {
+	    System.out.println("\r\nKeyVal: " + cur.key + cur.val);
+	    cur = cur.next;
+	}
+	System.out.println("\r\n");
     }
 
     class DLNode {
