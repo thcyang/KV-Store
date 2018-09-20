@@ -14,42 +14,42 @@ public class UDPHandler extends Handler implements Runnable {
     }
 
     public void run() {
-        try{
-          InetAddress addr = packet.getAddress();
-          int portnum = packet.getPort();
-          String message = new String(packet.getData(), 0, packet.getLength());
-          String[] strs = message.split("\\r?\\n");
-          byte[] buf = null;
-          DatagramSocket socket = new DatagramSocket();
-          
-          switch (strs[0]){
-                    case "set":
-                        String key = strs[1];
-                        String value = strs[2];
-                        map.put(key,value);
-                        buf = "Set Success.".getBytes();
-                        DatagramPacket pack = new DatagramPacket(buf, buf.length, addr, portnum);
-                        socket.send(pack);
-                        break;
+        try {
+            InetAddress addr = packet.getAddress();
+            int portnum = packet.getPort();
+            String message = new String(packet.getData(), 0, packet.getLength());
+            String[] strs = message.split("\\r?\\n");
+            byte[] buf = null;
+            DatagramSocket socket = new DatagramSocket();
 
-                    case "get":
-                        String key4g = strs[1];
-                        String v = map.get(key4g);
-                        String s = "Value for \"" +key4g+ "\" is \"" +v+"\".";
-                        buf = s.getBytes();
-                        DatagramPacket pack2 = new DatagramPacket(buf, buf.length, addr, portnum);
-                        socket.send(pack2);
-                        break;
+            switch (strs[0]) {
+                case "set":
+                    String key = strs[1];
+                    String value = strs[2];
+                    map.put(key, value);
+                    buf = "Set Success.".getBytes();
+                    DatagramPacket pack = new DatagramPacket(buf, buf.length, addr, portnum);
+                    socket.send(pack);
+                    break;
 
-                    case "stats":
-                        String str = "Count of objects currently stored in the KV store: "+ map.size();
-                        buf = str.getBytes();
-                        DatagramPacket pack3 = new DatagramPacket(buf, buf.length, addr, portnum);
-                        socket.send(pack3);
-                        break;
-        }
-        catch (IOException e){
-          e.printStackTrace();
+                case "get":
+                    String key4g = strs[1];
+                    String v = map.get(key4g);
+                    String s = "Value for \"" + key4g + "\" is \"" + v + "\".";
+                    buf = s.getBytes();
+                    DatagramPacket pack2 = new DatagramPacket(buf, buf.length, addr, portnum);
+                    socket.send(pack2);
+                    break;
+
+                case "stats":
+                    String str = "Count of objects currently stored in the KV store: " + map.size();
+                    buf = str.getBytes();
+                    DatagramPacket pack3 = new DatagramPacket(buf, buf.length, addr, portnum);
+                    socket.send(pack3);
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
