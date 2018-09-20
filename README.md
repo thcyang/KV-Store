@@ -27,7 +27,7 @@ Extra Features:
  should be a continuous string without any space or carriage return. There can be multiple keys.  
 
  - `<value>`  
- should be a continuous string without any space or carriage return. There can be multiple vaules corresponding to keys, and the format should be <key> followed by <value>, followed by next <key>, followed by next <value>, and so forth.  
+ should be a continuous string without any space or carriage return. There can be multiple vaules corresponding to keys, and the format should be `<key>` followed by `<value>`, followed by next `<key>`, followed by next `<value>`, and so forth.  
 
  ## Protocol Description
 
