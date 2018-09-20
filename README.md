@@ -8,8 +8,25 @@ Group Members:
 
 Extra Features:
  - Feature 1: Support a fixed sized data store with an eviction policy(LRU).
- - feature 2
+ - feature 2  
+ ## Client usage  
+ usage: java Client <server> <protocol> <operation> <key> <value>  
 
+ - <server>  
+ should be the IP address of the server  
+
+ - <protocol>  
+ should be "--TCP" or "-t" or "--UDP" or "-u"  
+
+ - <operation>  
+ should be "SET" or "GET" or "STATS"  
+
+ - <key>  
+ should be a continuous string without any space or carriage return. There can be multiple keys.  
+
+ - <value>  
+ should be a continuous string without any space or carriage return. There can be multiple vaules corresponding to keys, and the format should be <key> followed by <value>, followed by next <key>, followed by next <value>, and so forth.  
+  
  ## Protocol Description
 
  ## Performance Evaluation
