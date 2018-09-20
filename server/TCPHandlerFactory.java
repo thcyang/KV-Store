@@ -43,9 +43,10 @@ public class TCPHandlerFactory implements Runnable {
         catch (IOException e) {
               e.printStackTrace();
         }
-
+    }
     public void setMap(Map<String, String> map) {
         this.map = map;
     }
 }
+  
 
