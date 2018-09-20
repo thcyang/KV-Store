@@ -49,15 +49,20 @@ public class Client {
         // Checks the arguments user passed
         switch (args[2]) {
             case "set":
-                if (args.length % 2 != 1)
+                if (args.length % 2 != 1) {
                     showUsage();
+                    return;
+                }
                 break;
             case "get":
-                if (args.length % 2 != 0)
+                if (args.length % 2 != 0) {
                     showUsage();
+                    return;
+                }
                 break;
             default:
                 showUsage();
+                return;
         }
 
         setHost(args[0]);
@@ -85,99 +90,98 @@ public class Client {
     }
 
     private static void sendByTCP() {
-      String[] strs = message.split("\\r?\\n");
-      try{
-         Socket socket = new Socket(host,portnum4T);
-         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-         String str = null;
-         out.println(strs[0]);
-         switch(strs[0]) {
-           case "set":
-                out.println(strs[1]);
-                out.println(strs[2]);
-                str = in.readLine();
-                System.out.println(str);
-                break;
-           
-           case "get":
-                out.println(strs[1]);
-                str = in.readLine();
-                System.out.println(str);
-                break;
-           
-           case "stats":
-                str = in.readLine();
-                System.out.println(str);
-                break;
-         }     
-         socket.close();
-       }
-       catch (IOException e){
-          System.err.println("Sending Failed!");
-       }
+        String[] strs = message.split("\\r?\\n");
+        try{
+            Socket socket = new Socket(host,portnum4T);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String str = null;
+            out.println(strs[0]);
+            switch(strs[0]) {
+                case "set":
+                    out.println(strs[1]);
+                    out.println(strs[2]);
+                    str = in.readLine();
+                    System.out.println(str);
+                    break;
+
+                case "get":
+                    out.println(strs[1]);
+                    str = in.readLine();
+                    System.out.println(str);
+                    break;
+
+                case "stats":
+                    str = in.readLine();
+                    System.out.println(str);
+                    break;
+            }
+            socket.close();
+        }
+        catch (IOException e){
+            System.err.println("Sending Failed!");
+        }
     }
 
     private static void sendByUDP() {
         try {
-          DatagramSocket socket = new DatagramSocket();
-          byte[] me = message.getBytes();
-          byte[] buf = new byte[1024];
-          DatagramPacket packet = new DatagramPacket(me, me.length, InetAddress.getByName(host), portnum4U);
-          DatagramPacket rece = new DatagramPacket(buf, buf.length);
-          socket.send(packet);
-          socket.receive(rece);
-          String str = new String(rece.getData(), 0, rece.getLength());
-          System.out.println(str);
-         /***
-          byte[] o = op.getBytes();
-          byte[] buf = new byte[1024];
-          DatagramPacket packet4op = new DatagramPacket(o, o.length, InetAddress.getByName(host), portnum4U);
-          DatagramPacket rece = new DatagramPacket(buf, buf.length);
-          socket.send(packet4op);
-          ****/
-          
-          /****
-          switch (op){
-            case "set":
-               byte[] key = list.get(0).getBytes();//byte[] key = pairs.get(0).getKey().getBytes();
-               byte[] value = list.get(1).getBytes();
-               DatagramPacket packet4k = new DatagramPacket(key, key.length, InetAddress.getByName(host), portnum4U);
-               DatagramPacket packet4v = new DatagramPacket(value, value.length, InetAddress.getByName(host), portnum4U);
-               socket.send(packet4k);
-               socket.send(packet4v);
-               socket.receive(rece);
-               str = new String(rece.getData(), 0 ,rece.getLength());
-               System.out.println(str);
-               break;
-              
-           case "get":
-                byte[] key4g = list.get(0).getBytes();
-                DatagramPacket packet4g = new DatagramPacket(key4g, key4g.length, InetAddress.getByName(host), portnum4U);
-                socket.send(packet4g);
-                socket.receive(rece);
-                str = new String(rece.getData(), 0 ,rece.getLength());
-                System.out.println(str);
-                break;
-           
-           case "stats":
-                socket.receive(rece);
-                str = new String(rece.getData(), 0 ,rece.getLength());
-                System.out.println(str);
-                break;   
-          }
-          ****/
-          
-          socket.close();
+            DatagramSocket socket = new DatagramSocket();
+            byte[] me = message.getBytes();
+            byte[] buf = new byte[1024];
+            DatagramPacket packet = new DatagramPacket(me, me.length, InetAddress.getByName(host), portnum4U);
+            DatagramPacket rece = new DatagramPacket(buf, buf.length);
+            socket.send(packet);
+            socket.receive(rece);
+            String str = new String(rece.getData(), 0, rece.getLength());
+            System.out.println(str);
+            /***
+             byte[] o = op.getBytes();
+             byte[] buf = new byte[1024];
+             DatagramPacket packet4op = new DatagramPacket(o, o.length, InetAddress.getByName(host), portnum4U);
+             DatagramPacket rece = new DatagramPacket(buf, buf.length);
+             socket.send(packet4op);
+             ****/
+
+            /****
+             switch (op){
+             case "set":
+             byte[] key = list.get(0).getBytes();//byte[] key = pairs.get(0).getKey().getBytes();
+             byte[] value = list.get(1).getBytes();
+             DatagramPacket packet4k = new DatagramPacket(key, key.length, InetAddress.getByName(host), portnum4U);
+             DatagramPacket packet4v = new DatagramPacket(value, value.length, InetAddress.getByName(host), portnum4U);
+             socket.send(packet4k);
+             socket.send(packet4v);
+             socket.receive(rece);
+             str = new String(rece.getData(), 0 ,rece.getLength());
+             System.out.println(str);
+             break;
+
+             case "get":
+             byte[] key4g = list.get(0).getBytes();
+             DatagramPacket packet4g = new DatagramPacket(key4g, key4g.length, InetAddress.getByName(host), portnum4U);
+             socket.send(packet4g);
+             socket.receive(rece);
+             str = new String(rece.getData(), 0 ,rece.getLength());
+             System.out.println(str);
+             break;
+
+             case "stats":
+             socket.receive(rece);
+             str = new String(rece.getData(), 0 ,rece.getLength());
+             System.out.println(str);
+             break;
+             }
+             ****/
+
+            socket.close();
         }
         catch (IOException e){
-          System.err.println("Sending Failed!");
+            System.err.println("Sending Failed!");
         }
     }
 
     private static void showUsage() {
 
-        return;
     }
 
     private static void genMessage() {
