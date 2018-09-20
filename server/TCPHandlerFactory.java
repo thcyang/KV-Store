@@ -1,6 +1,7 @@
 import java.util.Map;
 import java.net.*;
 import java.io.*;
+
 import handler.TCPHandler;
 
 public class TCPHandlerFactory implements Runnable {
@@ -23,27 +24,25 @@ public class TCPHandlerFactory implements Runnable {
         // new connection from different clients
         try {
             serverSocket = new ServerSocket(port);
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             System.err.println("Could not listen on the port.");
             System.exit(-1);
         }
         while (listenning) {
-              try {
-                 TCPHandler tcp = new TCPHandler(map, serverSocket.accept());
-                 new Thread(tcp).start();  
-              }
-              catch (IOException e) {
-                 e.printStackTrace();
-              }
+            try {
+                TCPHandler tcp = new TCPHandler(map, serverSocket.accept());
+                new Thread(tcp).start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         try {
-              serverSocket.close();
-        } 
-        catch (IOException e) {
-              e.printStackTrace();
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
     public void setMap(Map<String, String> map) {
         this.map = map;
     }
