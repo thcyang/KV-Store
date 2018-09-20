@@ -22,7 +22,7 @@ public class UDPHandlerFactory implements Runnable {
         // new connection from different clients
         try {
              socket = new DatagramSocket(port);
-        } 
+        }
         catch (IOException e) {
              System.err.println("Could not listen on the port.");
              System.exit(-1);
@@ -37,7 +37,7 @@ public class UDPHandlerFactory implements Runnable {
                 InetAddress addr = packet.getAddress();
                 int portnum = packet.getPort();
                 String[] strs = message.split("\\r?\\n");
-                
+
                 switch (strs[0]){
                     case "set":
                         String key = strs[1];
@@ -47,7 +47,7 @@ public class UDPHandlerFactory implements Runnable {
                         DatagramPacket pack = new DatagramPacket(buf, buf.length, addr, portnum);
                         socket.send(pack);
                         break;
-                    
+
                     case "get":
                         String key4g = strs[1];
                         String v = map.get(key4g);
@@ -56,7 +56,7 @@ public class UDPHandlerFactory implements Runnable {
                         DatagramPacket pack2 = new DatagramPacket(buf, buf.length, addr, portnum);
                         socket.send(pack2);
                         break;
-                    
+
                     case "stats":
                         String str = "Count of objects currently stored in the KV store: "+ map.size();
                         buf = str.getBytes();
@@ -72,7 +72,7 @@ public class UDPHandlerFactory implements Runnable {
                 String op = new String(packet4op.getData(), 0, packet4op.getLength());
                 InetAddress addr = packet4op.getAddress();
                 int portnum = packet4op.getPort();
-                
+
                 switch (op){
                   case "set":
                     byte[] buf4k = new byte[1024];
@@ -88,7 +88,7 @@ public class UDPHandlerFactory implements Runnable {
                     DatagramPacket pack = new DatagramPacket(buf, buf.length, addr, portnum);
                     socket.send(pack);
                     break;
-                    
+
                   case "get":
                     byte[] buf4g = new byte[1024];
                     DatagramPacket packet4g = new DatagramPacket(buf4g, buf4g.length);
@@ -100,7 +100,7 @@ public class UDPHandlerFactory implements Runnable {
                     DatagramPacket pack2 = new DatagramPacket(buf, buf.length, addr, portnum);
                     socket.send(pack2);
                     break;
-                    
+
                   case "stats":
                     String str = "Count of objects currently stored in the KV store: "+ map.size();
                     buf = str.getBytes();
@@ -110,15 +110,14 @@ public class UDPHandlerFactory implements Runnable {
                 }
                 ******/
             }
-          catch(IOExceptin e){
+          catch(IOException e){
                 e.printStackTrace();
           } 
         }
-      
+
     }
 
     public void setMap(Map<String, String> map) {
         this.map = map;
     }
 }
-
