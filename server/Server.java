@@ -21,9 +21,10 @@ public class Server {
                         System.out.println("Server IP = " + hostname);
              } catch (UnknownHostException e) {}
       
-	LRUCache<String, String> lruCache = new LRUCache<String, String>(5);
-	TCPHandlerFactory.getInstance().setLruCache(lruCache);
+      	LRUCache<String, String> lruCache = new LRUCache<String, String>(5);
+	      TCPHandlerFactory.getInstance().setLruCache(lruCache);
         UDPHandlerFactory.getInstance().setLruCache(lruCache);
+
 
         TCPHandlerFactory.getInstance().setMap(map);
         UDPHandlerFactory.getInstance().setMap(map);

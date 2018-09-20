@@ -11,7 +11,7 @@ import java.net.*;
 
 public class TCPHandler implements Runnable {
     private Map<String, String> map;
-    LRUCache<String, String> lruCache;
+    private LRUCache<String, String> lruCache;
 
     private Socket socket;
 
