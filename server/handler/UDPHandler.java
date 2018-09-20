@@ -18,25 +18,38 @@ public class UDPHandler extends Handler implements Runnable {
             InetAddress addr = packet.getAddress();
             int portnum = packet.getPort();
             String message = new String(packet.getData(), 0, packet.getLength());
-            String[] strs = message.split("\\r?\\n");
+            String[] strs = message.split("\0");
+            String key = strs[1];
+            String value = strs[2];
             byte[] buf = null;
             DatagramSocket socket = new DatagramSocket();
+            StringBuilder sb = null;
 
             switch (strs[0]) {
                 case "set":
-                    String key = strs[1];
-                    String value = strs[2];
-                    map.put(key, value);
+                    count = Integer.parseInt(strs[1]);
+                    for(i=0; i<count; i++) {
+                        key = strs[2+2*i];
+                        value = strs[3+2*i];
+                        map.put(key, value);
+                    }
                     buf = "Set Success.".getBytes();
                     DatagramPacket pack = new DatagramPacket(buf, buf.length, addr, portnum);
                     socket.send(pack);
                     break;
 
                 case "get":
-                    String key4g = strs[1];
-                    String v = map.get(key4g);
-                    String s = "Value for \"" + key4g + "\" is: " + v;
-                    buf = s.getBytes();
+                    count = Integer.parseInt(strs[1]);
+                    for(i=0; i<count; i++) {
+                        sb.append("\0Value for \"");
+                        key = strs[2+i];
+                        sb.append(key);
+                        value = map.get(key);
+                        sb.append("\" is: ");
+                        sb.append(value); 
+                    }
+                    String mess = sb.toString();
+                    buf = mess.getBytes();
                     DatagramPacket pack2 = new DatagramPacket(buf, buf.length, addr, portnum);
                     socket.send(pack2);
                     break;
