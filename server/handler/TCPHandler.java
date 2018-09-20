@@ -1,11 +1,18 @@
 package handler;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.Map;
 import java.io.*;
 import java.net.*;
 
 public class TCPHandler implements Runnable {
     private Map<String, String> map;
+    LRUCache<String, String> lruCache;
+
     private Socket socket;
 
     public TCPHandler(Map<String, String> map, Socket socket) {
@@ -44,6 +51,8 @@ public class TCPHandler implements Runnable {
                         key = strs[2+2*i];
                         value = strs[3+2*i];
                         map.put(key, value);
+		  		//		lruCache.set(key, value);
+
                     }
                     out.println("Set Success.");
                     break;
@@ -56,6 +65,7 @@ public class TCPHandler implements Runnable {
                         key = strs[2+i];
                         sb.append(key);
                         value = map.get(key);
+					//    value = lruCache.get(key);
                         sb.append("\" is: ");
                         sb.append(value); 
                     }
@@ -75,5 +85,8 @@ public class TCPHandler implements Runnable {
             e.printStackTrace();
         }
     }
-}
 
+    public void setLruCache(LRUCache<String, String> lruCache) {
+	this.lruCache = lruCache;
+    }
+}
