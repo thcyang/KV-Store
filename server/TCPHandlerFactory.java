@@ -11,7 +11,7 @@ public class TCPHandlerFactory implements Runnable {
     private boolean listenning = true;
     private int port = 5556;
     private Map<String, String> map;
-    LRUCache<String, String> lruCache;
+    private LRUCache<String, String> lruCache;
 
     private ServerSocket serverSocket;
 
@@ -36,7 +36,7 @@ public class TCPHandlerFactory implements Runnable {
         while (listenning) {
             try {
                 TCPHandler tcp = new TCPHandler(map, serverSocket.accept());
-				tcp.setLruCache(lruCache);
+		tcp.setLruCache(lruCache);
                 new Thread(tcp).start();
             } catch (IOException e) {
                 e.printStackTrace();
