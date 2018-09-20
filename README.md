@@ -31,5 +31,15 @@ Extra Features:
  should be a continuous string without any space or carriage return. There can be multiple vaules corresponding to keys, and the format should be `<key>` followed by `<value>`, followed by next `<key>`, followed by next `<value>`, and so forth.  
 
  ## Protocol Description
+  protocol: 
+  message String form(from Client to Server):
+    set: operation+"\0"+count+"\0"+key+"\0"+value+"\0"+key+....
+    get: operation+"\0"+count+"\0"+key+"\0"+key+....
+    stats: operation+"\0"
+    
+  answer String form(from Server to Client):
+    set: answer
+    get: count+"\0"+answer+"\0"+answer+....
+    stats: answer
 
  ## Performance Evaluation
