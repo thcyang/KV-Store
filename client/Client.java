@@ -181,7 +181,18 @@ public class Client {
     }
 
     private static void showUsage() {
-
+        String s = "usage: java Client <server> <protocol> <operation> <key> <value>" + System.lineSeparator() + System.lineSeparator() +
+                "<server>" + System.lineSeparator() +
+                "should be the IP address of the server" + System.lineSeparator() + System.lineSeparator() +
+                "<protocol>" + System.lineSeparator() +
+                "should be \"--TCP\" or \"-t\" or \"--UDP\" or \"-u\"" + System.lineSeparator() + System.lineSeparator() +
+                "<operation>" + System.lineSeparator() +
+                "should be \"SET\" or \"GET\" or \"STATS\"" + System.lineSeparator() + System.lineSeparator() +
+                "<key>" + System.lineSeparator() +
+                "should be a continuous string without any space or carriage return. There can be multiple keys." + System.lineSeparator() + System.lineSeparator() +
+                "<value>" + System.lineSeparator() +
+                "should be a continuous string without any space or carriage return. There can be multiple vaules corresponding to keys, and the format should be <key> followed by <value>, followed by next <key>, followed by next <value>, and so forth.";
+        System.out.println(s);
     }
 
     private static void genMessage() {
