@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.*;
 import java.net.*;
 import java.io.*;
 
@@ -227,41 +226,39 @@ public class Client {
         switch (args[2]) {
             case "set":
                 count = (args.length-3) / 2;
-                sb.append("\\r?\\n");
-                sb.append(Integer.toString(count));
+                sb.append("\0");
+                sb.append(count);
                 for(i=0; i<count; i++) {
-                    sb.append("\\r?\\n");
+                    sb.append("\0");
                     sb.append(args[3+2*i]);
-                    sb.append("\\r?\\n");
+                    sb.append("\0");
                     sb.append(args[4+2*i]);
                 }
-                sb.append("\\r?\\n");
+                sb.append("\0");
                 message = sb.toString();
                 break;
             case "get":
                 count = (args.length-3);
-                sb.append("\\r?\\n");
-                sb.append(Integer.toString(count));
+                sb.append("\0");
+                sb.append(count);
                 for(i=0; i<count; i++) {
-                    sb.append("\\r?\\n");
+                    sb.append("\0");
                     sb.append(args[3+i]);
                 }
-                sb.append("\\r?\\n");
+                sb.append("\0");
                 message = sb.toString();
                 break;
             case "stats":
-                sb.append("\\r?\\n");
                 message = sb.toString();
                 break;
             default:
                 System.out.println("something wrong about generating message!");
-                break;
         }
     }
   
     private static void analyAnswer(String answer) {
         int count, i;
-        String[] strs = message.split("\\r?\\n");
+        String[] strs = answer.split("\0");
         count = Integer.parseInt(strs[0]);
         for(i=1;i<=count;i++) {
             System.out.println(strs[i]);

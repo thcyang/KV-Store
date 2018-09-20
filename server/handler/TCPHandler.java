@@ -24,13 +24,13 @@ public class TCPHandler extends Handler implements Runnable {
           
             String message = in.readLine();
           //
-            System.out.println(strs[i]);
+          //  System.out.println(strs[i]);
           //
-            String[] strs = message.split("\\r?\\n");
+            String[] strs = message.split("\0");
             
             //
-            int num = Integer.parseInt(strs.length);
-            for (i=0;i<num;i++) {
+            //int num = Integer.parseInt(strs.length);
+            for (i=0;i< strs.length;i++) {
                 System.out.println(strs[i]);
             }
             //
@@ -51,16 +51,16 @@ public class TCPHandler extends Handler implements Runnable {
                 case "get":
                     count = Integer.parseInt(strs[1]);
                     for(i=0; i<count; i++) {
-                        sb.append("\\r?\\n value for \"");
+                        sb.append("\0Value for \"");
                         key = strs[2+i];
                         sb.append(key);
                         value = map.get(key);
                         sb.append("\" is: ");
                         sb.append(value);
-                        sb.append("\\r?\\n");
-                        message = sb.toString;
+                        sb.append("\r\n");  
                     }
-                    out.println(sb);
+                    String mess = sb.toString();
+                    out.println(mess);
                     break;
 
                 case "stats":
