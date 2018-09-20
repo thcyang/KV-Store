@@ -33,7 +33,7 @@ public class TCPHandler extends Handler implements Runnable {
                case "get":
                   key = in.readLine();
                   value = map.get(key);
-                  out.println("Value for \"" +key+ "\" is \"" +value+"\".");
+                  out.println("Value for \"" +key+ "\" is: " +value);
                   break;
                
                case "stats":

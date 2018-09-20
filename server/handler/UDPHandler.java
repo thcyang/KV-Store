@@ -35,7 +35,7 @@ public class UDPHandler extends Handler implements Runnable {
                     case "get":
                         String key4g = strs[1];
                         String v = map.get(key4g);
-                        String s = "Value for \"" +key4g+ "\" is \"" +v+"\".";
+                        String s = "Value for \"" +key4g+ "\" is: " +v;
                         buf = s.getBytes();
                         DatagramPacket pack2 = new DatagramPacket(buf, buf.length, addr, portnum);
                         socket.send(pack2);
