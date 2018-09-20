@@ -19,12 +19,11 @@ import java.io.*;
  *   stats  returns a count of objects currently stored in the KV store
  * */
 public class Client {
-
-    private static List<Pair> pairs = new ArrayList<>();
     private static String host;
     private static String op;
-    int portnum4U = 5555;
-    int portnum4T = 5556;
+    private static int portnum4U = 5555;
+    private static int portnum4T = 5556;
+    private static String message;
 
     private static void setHost(String host) {
         Client.host = host;
@@ -49,7 +48,6 @@ public class Client {
 
         // Checks the arguments user passed
         switch (args[2]) {
-            case "stats":
             case "set":
                 if (args.length % 2 != 1)
                     showUsage();
@@ -70,7 +68,7 @@ public class Client {
         for (int i = 2; i < args.length; i++) {
             list.add(args[i]);
         }
-
+        genMessage();
         // Determines which protocol will be used to transport data
         switch (args[1]) {
             case "--tcp":
@@ -87,22 +85,23 @@ public class Client {
     }
 
     private static void sendByTCP() {
-       try{
+      String[] strs = message.split("\\r?\\n");
+      try{
          Socket socket = new Socket(host,portnum4T);
          PrintWriter out = new PrintWriter(s.getOutputStream(), true);
          BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
          String str = null;
-         out.println(op);
-         switch(op) {
+         out.println(strs[0]);
+         switch(strs[0]) {
            case "set":
-                out.println(list.get(0));
-                out.println(list.get(1));
+                out.println(strs[1]);
+                out.println(strs[2]);
                 str = in.readLine();
                 System.out.println(str);
                 break;
            
            case "get":
-                out.println(list.get(0));
+                out.println(strs[1]);
                 str = in.readLine();
                 System.out.println(str);
                 break;
@@ -122,13 +121,23 @@ public class Client {
     private static void sendByUDP() {
         try {
           DatagramSocket socket = new DatagramSocket();
+          byte[] me = message.getBytes();
+          byte[] buf = new byte[1024];
+          DatagramPacket packet = new DatagramPacket(me, me.length, InetAddress.getByName(host), portnum4U);
+          DatagramPacket rece = new DatagramPacket(buf, buf.length);
+          socket.send(packet);
+          socket.receive(rece);
+          String str = new String(rece.getData(), 0, rece.getLength());
+          System.out.println(str);
+         /***
           byte[] o = op.getBytes();
           byte[] buf = new byte[1024];
           DatagramPacket packet4op = new DatagramPacket(o, o.length, InetAddress.getByName(host), portnum4U);
           DatagramPacket rece = new DatagramPacket(buf, buf.length);
-          String str = null;
           socket.send(packet4op);
+          ****/
           
+          /****
           switch (op){
             case "set":
                byte[] key = list.get(0).getBytes();//byte[] key = pairs.get(0).getKey().getBytes();
@@ -157,6 +166,7 @@ public class Client {
                 System.out.println(str);
                 break;   
           }
+          ****/
           
           socket.close();
         }
@@ -170,7 +180,7 @@ public class Client {
         return;
     }
 
-    private static String genMessage() {
+    private static void genMessage() {
 
     }
 }

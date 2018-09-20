@@ -1,6 +1,7 @@
 import java.util.Map;
 import java.net.*;
 import java.io.*;
+import handler.TCPHandler;
 
 public class TCPHandlerFactory implements Runnable {
     private static TCPHandlerFactory ourInstance = new TCPHandlerFactory();
@@ -28,40 +29,20 @@ public class TCPHandlerFactory implements Runnable {
             System.exit(-1);
         }
         while (listenning) {
-          try{
-             socket s = serverSocket.accept();
-             PrintWriter out = new PrintWriter(s.getOutputStream(),true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-             System.out.println("Got connection from " + s.getInetAddress());
-             String key = null;
-             String value = null;
-             
-             String op = in.readLine();
-             switch(op) {
-               case "set":
-                  key = in.readLine();
-                  value = in.readLine();
-                  map.put(key, value);
-                  out.println("Set Success.");
-                  break;
-              
-               case "get":
-                  key = in.readLine();
-                  value = map.get(key);
-                  out.println("Value for \"" +key+ "\" is \"" +value+"\".");
-                  break;
-               
-               case "stats":
-                  out.println("Count of objects currently stored in the KV store: "+ map.size());
-                  break;
-               }
-            
-          }
-          catch (IOException e){
-            e.printStackTrace();
-          }
+              try {
+                 TCPHandler tcp = new TCPHandler(map, serverSocket.accept());
+                 new Thread(tcp).start();  
+              }
+              catch (IOException e) {
+                 e.printStackTrace();
+              }
         }
-    }
+        try {
+              serverSocket.close();
+        } 
+        catch (IOException e) {
+              e.printStackTrace();
+        }
 
     public void setMap(Map<String, String> map) {
         this.map = map;
