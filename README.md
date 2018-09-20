@@ -12,21 +12,21 @@ Extra Features:
  ## Client usage  
  usage: java Client <server> <protocol> <operation> <key> <value>  
 
- - <server>  
+ - `<server>`  
  should be the IP address of the server  
 
- - <protocol>  
+ - `<protocol>`  
  should be "--TCP" or "-t" or "--UDP" or "-u"  
 
- - <operation>  
+ - `<operation>`  
  should be "SET" or "GET" or "STATS"  
 
- - <key>  
+ - `<key>`  
  should be a continuous string without any space or carriage return. There can be multiple keys.  
 
- - <value>  
+ - `<value>`  
  should be a continuous string without any space or carriage return. There can be multiple vaules corresponding to keys, and the format should be <key> followed by <value>, followed by next <key>, followed by next <value>, and so forth.  
-  
+
  ## Protocol Description
 
  ## Performance Evaluation
