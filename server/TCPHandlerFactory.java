@@ -36,7 +36,7 @@ public class TCPHandlerFactory implements Runnable {
         while (listenning) {
             try {
                 TCPHandler tcp = new TCPHandler(map, serverSocket.accept());
-		tcp.setLruCache(lruCache);
+                tcp.setLruCache(lruCache);
                 new Thread(tcp).start();
             } catch (IOException e) {
                 e.printStackTrace();
