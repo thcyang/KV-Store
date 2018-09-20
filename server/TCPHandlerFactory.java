@@ -24,13 +24,14 @@ public class TCPHandlerFactory implements Runnable {
         // new connection from different clients
         try {
             serverSocket = new ServerSocket(port);
+            System.out.println("Waiting for connections");
         } catch (IOException e) {
             System.err.println("Could not listen on the port.");
             System.exit(-1);
         }
         while (listenning) {
             try {
-                TCPHandler tcp = new TCPHandler(map, serverSocket.accept());
+                TCPHandler tcp = new TCPHandler(map, serverSocket.accept())；
                 new Thread(tcp).start();
             } catch (IOException e) {
                 e.printStackTrace();

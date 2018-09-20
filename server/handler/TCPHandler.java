@@ -20,20 +20,47 @@ public class TCPHandler extends Handler implements Runnable {
             System.out.println("Got connection from " + socket.getInetAddress());
             String key = null;
             String value = null;
-
-            String op = in.readLine();
+            int i,count;
+          
+            String message = in.readLine();
+          //
+            System.out.println(strs[i]);
+          //
+            String[] strs = message.split("\\r?\\n");
+            
+            //
+            int num = Integer.parseInt(strs.length);
+            for (i=0;i<num;i++) {
+                System.out.println(strs[i]);
+            }
+            //
+          
+            StringBuilder sb = new StringBuilder(strs[1]);
+            String op = strs[0];
             switch (op) {
                 case "set":
-                    key = in.readLine();
-                    value = in.readLine();
-                    map.put(key, value);
+                    count = Integer.parseInt(strs[1]);
+                    for(i=0; i<count; i++) {
+                        key = strs[2+2*i];
+                        value = strs[3+2*i];
+                        map.put(key, value);
+                    }
                     out.println("Set Success.");
                     break;
 
                 case "get":
-                    key = in.readLine();
-                    value = map.get(key);
-                    out.println("Value for \"" + key + "\" is: " + value);
+                    count = Integer.parseInt(strs[1]);
+                    for(i=0; i<count; i++) {
+                        sb.append("\\r?\\n value for \"");
+                        key = strs[2+i];
+                        sb.append(key);
+                        value = map.get(key);
+                        sb.append("\" is: ");
+                        sb.append(value);
+                        sb.append("\\r?\\n");
+                        message = sb.toString;
+                    }
+                    out.println(sb);
                     break;
 
                 case "stats":

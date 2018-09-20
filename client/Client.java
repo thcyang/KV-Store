@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.*;
 import java.net.*;
 import java.io.*;
 
@@ -60,6 +61,12 @@ public class Client {
                     return;
                 }
                 break;
+            case "stats":
+                if (args.length != 3) {
+                    showUsage();
+                    return;
+                }
+                break;
             default:
                 showUsage();
                 return;
@@ -69,11 +76,20 @@ public class Client {
         setOp(args[2]);
 
         // Stores the operation as well as keys and/or values in the list in order
+        
+        /***
+        edit by XL, I think the purpose of using the ArrayList is to store message, 
+        which now we decide to use sting message to transfer information, so I think this is useless.
+        
         List<String> list = new ArrayList<>();
         for (int i = 2; i < args.length; i++) {
             list.add(args[i]);
         }
-        genMessage();
+        */
+      
+        //generate the message form used for trasfering information between client and server.
+        genMessage(args);
+      
         // Determines which protocol will be used to transport data
         switch (args[1]) {
             case "--tcp":
@@ -90,30 +106,34 @@ public class Client {
     }
 
     private static void sendByTCP() {
-        String[] strs = message.split("\\r?\\n");
+        //String[] strs = message.split("\\r?\\n");
         try{
             Socket socket = new Socket(host,portnum4T);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String str = null;
-            out.println(strs[0]);
-            switch(strs[0]) {
+            String answer = null;
+            //out.println(strs[0]);
+            switch(op) {
                 case "set":
-                    out.println(strs[1]);
-                    out.println(strs[2]);
-                    str = in.readLine();
-                    System.out.println(str);
+                    //out.println(strs[1]);
+                    //out.println(strs[2]);
+                    out.println(message);
+                    answer = in.readLine();
+                    System.out.println(answer);
                     break;
 
                 case "get":
-                    out.println(strs[1]);
-                    str = in.readLine();
-                    System.out.println(str);
+                    //out.println(strs[1]);
+                    out.println(message);
+                    answer = in.readLine();
+                    analyAnswer(answer);
+                    //System.out.println(answer);
                     break;
 
                 case "stats":
-                    str = in.readLine();
-                    System.out.println(str);
+                    out.println(message);
+                    answer = in.readLine();
+                    System.out.println(answer);
                     break;
             }
             socket.close();
@@ -195,8 +215,57 @@ public class Client {
         System.out.println(s);
     }
 
-    private static void genMessage() {
-
+  
+ /*message String form:
+    set: operation+"\\r?\\n"+count+"\\r?\\n"+key+"\\r?\\n"+value+"\\r?\\n"+key+....
+    get: operation+"\\r?\\n"+count+"\\r?\\n"+key+"\\r?\\n"+key+....
+    stats: operation+"\\r?\\n"
+ */
+    private static void genMessage(String[] args) {
+        StringBuilder sb = new StringBuilder(args[2]);
+        int count, i;
+        switch (args[2]) {
+            case "set":
+                count = (args.length-3) / 2;
+                sb.append("\\r?\\n");
+                sb.append(Integer.toString(count));
+                for(i=0; i<count; i++) {
+                    sb.append("\\r?\\n");
+                    sb.append(args[3+2*i]);
+                    sb.append("\\r?\\n");
+                    sb.append(args[4+2*i]);
+                }
+                sb.append("\\r?\\n");
+                message = sb.toString();
+                break;
+            case "get":
+                count = (args.length-3);
+                sb.append("\\r?\\n");
+                sb.append(Integer.toString(count));
+                for(i=0; i<count; i++) {
+                    sb.append("\\r?\\n");
+                    sb.append(args[3+i]);
+                }
+                sb.append("\\r?\\n");
+                message = sb.toString();
+                break;
+            case "stats":
+                sb.append("\\r?\\n");
+                message = sb.toString();
+                break;
+            default:
+                System.out.println("something wrong about generating message!");
+                break;
+        }
+    }
+  
+    private static void analyAnswer(String answer) {
+        int count, i;
+        String[] strs = message.split("\\r?\\n");
+        count = Integer.parseInt(strs[0]);
+        for(i=1;i<=count;i++) {
+            System.out.println(strs[i]);
+        }
     }
 }
 
