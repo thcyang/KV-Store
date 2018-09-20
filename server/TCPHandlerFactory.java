@@ -1,7 +1,9 @@
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.Map;
 import java.net.*;
 import java.io.*;
-
+import handler.LRUCache;
 import handler.TCPHandler;
 
 public class TCPHandlerFactory implements Runnable {
@@ -9,6 +11,8 @@ public class TCPHandlerFactory implements Runnable {
     private boolean listenning = true;
     private int port = 5556;
     private Map<String, String> map;
+    LRUCache<String, String> lruCache;
+
     private ServerSocket serverSocket;
 
     private TCPHandlerFactory() {
@@ -32,6 +36,7 @@ public class TCPHandlerFactory implements Runnable {
         while (listenning) {
             try {
                 TCPHandler tcp = new TCPHandler(map, serverSocket.accept());
+				tcp.setLruCache(lruCache);
                 new Thread(tcp).start();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -47,6 +52,7 @@ public class TCPHandlerFactory implements Runnable {
     public void setMap(Map<String, String> map) {
         this.map = map;
     }
+    public void setLruCache(LRUCache<String, String> lruCache) {
+	this.lruCache = lruCache;
+    }
 }
-  
-

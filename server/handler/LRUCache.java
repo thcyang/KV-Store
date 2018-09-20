@@ -81,6 +81,15 @@ public class LRUCache<KeyType, ValueType> {
         }
     }
 
+    public void logPrint() {
+	DLNode cur = head;
+	while (cur != null) {
+	    System.out.println("\r\nKeyVal: " + cur.key + cur.val);
+	    cur = cur.next;
+	}
+	System.out.println("\r\n");
+    }
+
     class DLNode {
         public KeyType key;
         public ValueType val;
