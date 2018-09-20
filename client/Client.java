@@ -88,8 +88,8 @@ public class Client {
       String[] strs = message.split("\\r?\\n");
       try{
          Socket socket = new Socket(host,portnum4T);
-         PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-         BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
          String str = null;
          out.println(strs[0]);
          switch(strs[0]) {
@@ -113,7 +113,7 @@ public class Client {
          }     
          socket.close();
        }
-       catch (IOException){
+       catch (IOException e){
           System.err.println("Sending Failed!");
        }
     }
@@ -170,7 +170,7 @@ public class Client {
           
           socket.close();
         }
-        catch (IOException){
+        catch (IOException e){
           System.err.println("Sending Failed!");
         }
     }
