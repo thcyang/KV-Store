@@ -3,11 +3,9 @@ package handler;
 import java.util.Map;
 import java.net.*;
 import java.io.*;
-import handler.LRUCache;
 
 public class UDPHandler extends Handler implements Runnable {
     private Map<String, String> map;
-    private LRUCache<String, String> lruCache;
     private DatagramPacket packet;
 
     public UDPHandler(Map<String, String> map, DatagramPacket packet) {
@@ -19,6 +17,7 @@ public class UDPHandler extends Handler implements Runnable {
         try {
             InetAddress addr = packet.getAddress();
             int portnum = packet.getPort();
+            int i,count;
             String message = new String(packet.getData(), 0, packet.getLength());
             String[] strs = message.split("\0");
             String key = strs[1];
@@ -29,26 +28,18 @@ public class UDPHandler extends Handler implements Runnable {
 
             switch (strs[0]) {
                 case "set":
-<<<<<<< HEAD
                     count = Integer.parseInt(strs[1]);
                     for(i=0; i<count; i++) {
                         key = strs[2+2*i];
                         value = strs[3+2*i];
                         map.put(key, value);
                     }
-=======
-                    String key = strs[1];
-                    String value = strs[2];
-                    map.put(key, value);
-                    //lruCache.set(key, value);
->>>>>>> b3593293e4450d792b6813bf3b5c94ce6f426427
                     buf = "Set Success.".getBytes();
                     DatagramPacket pack = new DatagramPacket(buf, buf.length, addr, portnum);
                     socket.send(pack);
                     break;
 
                 case "get":
-<<<<<<< HEAD
                     count = Integer.parseInt(strs[1]);
                     for(i=0; i<count; i++) {
                         sb.append("\0Value for \"");
@@ -60,13 +51,6 @@ public class UDPHandler extends Handler implements Runnable {
                     }
                     String mess = sb.toString();
                     buf = mess.getBytes();
-=======
-                    String key4g = strs[1];
-                    String v = map.get(key4g);
-                    //String v = lruCache.get(key4g);
-                    String s = "Value for \"" + key4g + "\" is: " + v;
-                    buf = s.getBytes();
->>>>>>> b3593293e4450d792b6813bf3b5c94ce6f426427
                     DatagramPacket pack2 = new DatagramPacket(buf, buf.length, addr, portnum);
                     socket.send(pack2);
                     break;
@@ -81,9 +65,6 @@ public class UDPHandler extends Handler implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    public void setLruCache(LRUCache<String, String> lruCache) {
-	this.lruCache = lruCache;
     }
 }
 
