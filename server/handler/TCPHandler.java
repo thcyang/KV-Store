@@ -4,7 +4,7 @@ import java.util.Map;
 import java.io.*;
 import java.net.*;
 
-public class TCPHandler extends Handler implements Runnable {
+public class TCPHandler implements Runnable {
     private Map<String, String> map;
     private Socket socket;
 
@@ -34,11 +34,11 @@ public class TCPHandler extends Handler implements Runnable {
                 System.out.println(strs[i]);
             }
             //
-          
-            StringBuilder sb = new StringBuilder(strs[1]);
+            StringBuilder sb = null;
             String op = strs[0];
             switch (op) {
                 case "set":
+                    sb = new StringBuilder(strs[1]);
                     count = Integer.parseInt(strs[1]);
                     for(i=0; i<count; i++) {
                         key = strs[2+2*i];
@@ -49,6 +49,7 @@ public class TCPHandler extends Handler implements Runnable {
                     break;
 
                 case "get":
+                    sb = new StringBuilder(strs[1]);
                     count = Integer.parseInt(strs[1]);
                     for(i=0; i<count; i++) {
                         sb.append("\0Value for \"");
@@ -56,8 +57,7 @@ public class TCPHandler extends Handler implements Runnable {
                         sb.append(key);
                         value = map.get(key);
                         sb.append("\" is: ");
-                        sb.append(value);
-                        sb.append("\r\n");  
+                        sb.append(value); 
                     }
                     String mess = sb.toString();
                     out.println(mess);

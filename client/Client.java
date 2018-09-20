@@ -55,7 +55,7 @@ public class Client {
                 }
                 break;
             case "get":
-                if (args.length % 2 != 0) {
+                if (args.length < 4) {
                     showUsage();
                     return;
                 }
