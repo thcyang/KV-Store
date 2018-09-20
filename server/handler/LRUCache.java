@@ -13,6 +13,9 @@ public class LRUCache<KeyType, ValueType> {
         this.capacity = capacity;
         len = 0;
     }
+    public int size() {
+	return len;
+    }
 
     public ValueType get(KeyType key) {
         if (map.containsKey(key)) {
