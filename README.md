@@ -10,7 +10,7 @@ Extra Features:
  - Feature 1: Support a fixed sized data store with an eviction policy(LRU).
  - feature 2  
  ## Client usage  
- usage: java Client <server> <protocol> <operation> <key> <value>  
+ usage: java Client `<server>` `<protocol>` `<operation>` `<key>` `<value>`  
 
  - `<server>`  
  should be the IP address of the server  
