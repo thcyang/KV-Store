@@ -24,8 +24,7 @@ public class UDPHandler extends Handler implements Runnable {
             String value = strs[2];
             byte[] buf = null;
             DatagramSocket socket = new DatagramSocket();
-            StringBuilder sb = null;
-
+  
             switch (strs[0]) {
                 case "set":
                     count = Integer.parseInt(strs[1]);
@@ -41,6 +40,7 @@ public class UDPHandler extends Handler implements Runnable {
 
                 case "get":
                     count = Integer.parseInt(strs[1]);
+                    StringBuilder sb = new StringBuilder(strs[1]);
                     for(i=0; i<count; i++) {
                         sb.append("\0Value for \"");
                         key = strs[2+i];

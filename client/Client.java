@@ -152,7 +152,8 @@ public class Client {
             socket.send(packet);
             socket.receive(rece);
             String str = new String(rece.getData(), 0, rece.getLength());
-            System.out.println(str);
+            analyAnswer(str);
+            //System.out.println(str);
             /***
              byte[] o = op.getBytes();
              byte[] buf = new byte[1024];
