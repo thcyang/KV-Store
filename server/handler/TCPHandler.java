@@ -30,9 +30,7 @@ public class TCPHandler implements Runnable {
             int i,count;
           
             String message = in.readLine();
-          //
-          //  System.out.println(strs[i]);
-          //
+          
             String[] strs = message.split("\0");
             
             //
@@ -45,7 +43,6 @@ public class TCPHandler implements Runnable {
             String op = strs[0];
             switch (op) {
                 case "set":
-                    sb = new StringBuilder(strs[1]);
                     count = Integer.parseInt(strs[1]);
                     for(i=0; i<count; i++) {
                         key = strs[2+2*i];

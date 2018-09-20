@@ -20,8 +20,8 @@ public class UDPHandler extends Handler implements Runnable {
             int i,count;
             String message = new String(packet.getData(), 0, packet.getLength());
             String[] strs = message.split("\0");
-            String key = strs[1];
-            String value = strs[2];
+            String key = null;
+            String value = null;
             byte[] buf = null;
             DatagramSocket socket = new DatagramSocket();
   

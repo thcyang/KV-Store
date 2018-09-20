@@ -152,8 +152,13 @@ public class Client {
             socket.send(packet);
             socket.receive(rece);
             String str = new String(rece.getData(), 0, rece.getLength());
-            analyAnswer(str);
-            //System.out.println(str);
+            
+            if(op.equals("get")) {
+                analyAnswer(str);
+            } else {
+                System.out.println(str);
+            }
+            
             /***
              byte[] o = op.getBytes();
              byte[] buf = new byte[1024];
@@ -253,7 +258,7 @@ public class Client {
                 message = sb.toString();
                 break;
             default:
-                System.out.println("something wrong about generating message!");
+                System.out.println("Something wrong about generating message!");
         }
     }
   

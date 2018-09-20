@@ -28,7 +28,7 @@ public class TCPHandlerFactory implements Runnable {
         // new connection from different clients
         try {
             serverSocket = new ServerSocket(port);
-            System.out.println("Waiting for connections");
+            System.out.println("Waiting for connections for TCP.");
         } catch (IOException e) {
             System.err.println("Could not listen on the port.");
             System.exit(-1);
