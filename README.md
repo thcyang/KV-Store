@@ -7,8 +7,10 @@ Group Members:
  - [Xianquan Liao](mailto:xianquanliao@gwu.edu)
 
 Extra Features:
- - Feature 1: Support a fixed sized data store with an eviction policy(LRU).
- - feature 2  
+ - Feature 1: Support a fixed sized data store with an eviction policy (LRU).
+ - Feature 2: Support for both TCP and UDP 
+ - Feature 3: Support a MULTISET operation that allows several key/value pairs to be added in a single connection  
+ - Feature 4: Support a MULTIGET operation that allows several key/value pairs to be added in a single connection
  ## Client usage  
  usage: java Client `<server>` `<protocol>` `<operation>` `<key>` `<value>`  
 
