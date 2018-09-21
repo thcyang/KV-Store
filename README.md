@@ -7,11 +7,15 @@ Group Members:
  - [Xianquan Liao](mailto:xianquanliao@gwu.edu)
 
 Extra Features:
- - Feature 1: Support a fixed sized data store with an eviction policy (LRU).
- - Feature 2: Support for both TCP and UDP.
- - Feature 3: Support a MULTISET operation that allows several key/value pairs to be added in a single connection. 
- - Feature 4: Support a MULTIGET operation that allows several key/value pairs to be added in a single connection.
- - Feature 5: Support parallelism in the server using threads for both TCP and UDP.
+ - Feature 1: Support a fixed sized data store with an eviction policy (LRU).  
+ - Feature 2: Support for both TCP and UDP.  
+ class `Server` news 2 objects, `TCPHandlerFactory` and `UDPHandlerFactory`. The object `TCPHandlerFactory` is responsible for handling TCP connections and `UDPHandlerFactory` for UDP connections.  
+ - Feature 3: Support a MULTISET operation that allows several key/value pairs to be added in a single connection.  
+ When users want to use MULTISET operation, you just need to pass `SET` operation followed by multiple key and value pairs.
+ - Feature 4: Support a MULTIGET operation that allows several key/value pairs to be added in a single connection.  
+ When users want to use MULTIGET operation, you just need to pass `GET` operation followed by multiple keys.  
+ - Feature 5: Support parallelism in the server using threads for both TCP and UDP.  
+ Whenever `TCPHandlerFactory` gets a socket from a client, `TCPHandlerFactory` generate a new `TCPHandler` to serve the client. `UDPHandlerFactory` is similar to the `TCPHandlerFactory`.  
  ## Client usage  
  usage: java Client `<server>` `<protocol>` `<operation>` `<key>` `<value>`  
 
