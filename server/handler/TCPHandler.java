@@ -5,18 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Map;
-import java.io.*;
-import java.net.*;
 
-public class TCPHandler implements Runnable {
-    private Map<String, String> map;
-    private LRUCache<String, String> lruCache;
-
+public class TCPHandler extends Handler implements Runnable {
     private Socket socket;
 
-    public TCPHandler(Map<String, String> map, Socket socket) {
-        this.map = map;
+    public TCPHandler(Socket socket) {
         this.socket = socket;
     }
 
@@ -27,15 +20,15 @@ public class TCPHandler implements Runnable {
             System.out.println("Got connection from " + socket.getInetAddress());
             String key = null;
             String value = null;
-            int i,count;
-          
+            int i, count;
+
             String message = in.readLine();
-          
+
             String[] strs = message.split("\0");
-            
+
             //
             //int num = Integer.parseInt(strs.length);
-            for (i=0;i< strs.length;i++) {
+            for (i = 0; i < strs.length; i++) {
                 System.out.println(strs[i]);
             }
             //
@@ -44,12 +37,10 @@ public class TCPHandler implements Runnable {
             switch (op) {
                 case "set":
                     count = Integer.parseInt(strs[1]);
-                    for(i=0; i<count; i++) {
-                        key = strs[2+2*i];
-                        value = strs[3+2*i];
-                        map.put(key, value);
-		  		//		lruCache.set(key, value);
-
+                    for (i = 0; i < count; i++) {
+                        key = strs[2 + 2 * i];
+                        value = strs[3 + 2 * i];
+                        set(key, value);
                     }
                     out.println("Set Success.");
                     break;
@@ -57,33 +48,27 @@ public class TCPHandler implements Runnable {
                 case "get":
                     sb = new StringBuilder(strs[1]);
                     count = Integer.parseInt(strs[1]);
-                    for(i=0; i<count; i++) {
+                    for (i = 0; i < count; i++) {
                         sb.append("\0Value for \"");
-                        key = strs[2+i];
+                        key = strs[2 + i];
                         sb.append(key);
-                        value = map.get(key);
-					//    value = lruCache.get(key);
+                        value = get(key);
                         sb.append("\" is: ");
-                        sb.append(value); 
+                        sb.append(value);
                     }
                     String mess = sb.toString();
                     out.println(mess);
                     break;
 
                 case "stats":
-                    out.println("Count of objects currently stored in the KV store: " + map.size());
+                    out.println("Count of objects currently stored in the KV store: " + stats());
                     break;
             }
-
             out.close();
             in.close();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void setLruCache(LRUCache<String, String> lruCache) {
-	this.lruCache = lruCache;
     }
 }

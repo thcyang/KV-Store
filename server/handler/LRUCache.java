@@ -1,9 +1,10 @@
 package handler;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LRUCache<KeyType, ValueType> {
-    private HashMap<KeyType, DLNode> map = new HashMap<KeyType, DLNode>();
+    private Map<KeyType, DLNode> map = new ConcurrentHashMap<>();
     private DLNode head;
     private DLNode end;
     private int capacity;
@@ -13,8 +14,9 @@ public class LRUCache<KeyType, ValueType> {
         this.capacity = capacity;
         len = 0;
     }
+
     public int size() {
-	return len;
+        return len;
     }
 
     public ValueType get(KeyType key) {
@@ -85,12 +87,12 @@ public class LRUCache<KeyType, ValueType> {
     }
 
     public void logPrint() {
-	DLNode cur = head;
-	while (cur != null) {
-	    System.out.println("\r\nKeyVal: " + cur.key + cur.val);
-	    cur = cur.next;
-	}
-	System.out.println("\r\n");
+        DLNode cur = head;
+        while (cur != null) {
+            System.out.println("\r\nKeyVal: " + cur.key + cur.val);
+            cur = cur.next;
+        }
+        System.out.println("\r\n");
     }
 
     class DLNode {

@@ -1,24 +1,20 @@
 package handler;
 
-import java.util.Map;
-
 public abstract class Handler {
-    private Map<String, String> map;
-
-    public void setMap(Map<String, String> map) {
-        this.map = map;
-    }
+    private LRUCache<String, String> lruCache = new LRUCache<>(20);
 
     void set(String key, String value) {
-        map.put(key, value);
+        lruCache.set(key, value);
+        lruCache.logPrint();
     }
 
     String get(String key) {
-        return map.get(key);
+        lruCache.logPrint();
+        return lruCache.get(key);
     }
 
     int stats() {
-        return map.size();
+        return lruCache.size();
     }
 }
 

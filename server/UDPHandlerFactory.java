@@ -1,16 +1,12 @@
-import java.util.Map;
 import java.net.*;
 import java.io.*;
 
 import handler.UDPHandler;
-import handler.LRUCache;
 
 public class UDPHandlerFactory implements Runnable {
     private static UDPHandlerFactory ourInstance = new UDPHandlerFactory();
     private boolean listenning = true;
     private int port = 5555;
-    private Map<String, String> map;
-    LRUCache<String, String> lruCache;
     private DatagramSocket socket;
 
     private UDPHandlerFactory() {
@@ -35,7 +31,7 @@ public class UDPHandlerFactory implements Runnable {
                 byte[] me = new byte[1024 * 64];
                 DatagramPacket packet = new DatagramPacket(me, me.length);
                 socket.receive(packet);
-                UDPHandler udp = new UDPHandler(map, packet);
+                UDPHandler udp = new UDPHandler(packet);
                 new Thread(udp).start();
 
                 /****
@@ -89,12 +85,4 @@ public class UDPHandlerFactory implements Runnable {
         }
 
     }
-
-    public void setMap(Map<String, String> map) {
-        this.map = map;
-    }
-    public void setLruCache(LRUCache<String, String> lruCache) {
-	this.lruCache = lruCache;
-    }
-    
 }
