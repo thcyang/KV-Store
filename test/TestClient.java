@@ -1,22 +1,7 @@
 import java.net.*;
 import java.io.*;
 
-/*
- * client usage: java client <server> <protocol> <operation> <key> <value>...
- * it supports multiple pairs of key and value
- *
- * protocol should be:
- *   --TCP  uses TCP
- *   --UDP  uses UDP
- *   -t     uses TCP
- *   -u     uses UDP
- *
- * operation should be:
- *   set    adds a key and value to the server
- *   get    returns a value to the client for the requested key
- *   stats  returns a count of objects currently stored in the KV store
- * */
-public class Client {
+public class TestClient {
     private static String host;
     private static String op;
     private static int portnum4U = 5555;
@@ -24,15 +9,25 @@ public class Client {
     private static String message;
 
     private static void setHost(String host) {
-        Client.host = host;
+        TestClient.host = host;
     }
 
     private static void setOp(String op) {
-        Client.op = op;
+        TestClient.op = op;
     }
 
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 10000; i++) {
+            int rand = (int) (Math.random() * 500);
+            args[3] = rand + "";
+            // all code previously in method main() was moved into method test()
+            test(args);
+        }
+        System.out.println("Time of running client 10000 times: " + (System.currentTimeMillis() - start) + "ms");
+    }
 
+    private static void test(String[] args) {
         // Checks the arguments user passed
         if (args.length < 3) {
             showUsage();
