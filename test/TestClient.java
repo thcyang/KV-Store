@@ -16,97 +16,108 @@ public class TestClient {
         TestClient.op = op;
     }
 
+    /**
+     * java client localhost --TCP set latency
+     * java client localhost --TCP get latency
+     *
+     * java client localhost --TCP set key value
+     * */
     public static void main(String[] args) {
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < 10000; i++) {
-            int rand = (int) (Math.random() * 500);
-            args[3] = rand + "";
-            // all code previously in method main() was moved into method test()
-            test(args);
-        }
-        System.out.println("Time of running client 10000 times: " + (System.currentTimeMillis() - start) + "ms");
-    }
-
-    private static void test(String[] args) {
-        // Checks the arguments user passed
-        if (args.length < 3) {
-            showUsage();
-            return;
-        }
-
-        // converts first 3 args to lower case
-        for (int i = 0; i < 3; i++) {
-            args[i] = args[i].toLowerCase();
-        }
-
-        // Checks the arguments user passed
-        switch (args[2]) {
-            case "set":
-                if (args.length % 2 != 1) {
-                    showUsage();
-                    return;
-                }
-                break;
-            case "get":
-                if (args.length < 4) {
-                    showUsage();
-                    return;
-                }
-                break;
-            case "stats":
-                if (args.length != 3) {
-                    showUsage();
-                    return;
-                }
-                break;
-            default:
-                showUsage();
-                return;
-        }
-
         setHost(args[0]);
         setOp(args[2]);
-
-        //generate the message form used for trasfering information between client and server.
-        genMessage(args);
-
-        // Determines which protocol will be used to transport data
-        switch (args[1]) {
-            case "--tcp":
-            case "-t":
-                sendByTCP();
+        switch (args[3]) {
+            case "latency":
+                latency(args);
                 break;
-            case "--udp":
-            case "-u":
-                sendByUDP();
+            case "throughput":
+                throughput();
                 break;
             default:
-                showUsage();
         }
+    }
+
+    private static void latency(String[] args) {
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 10000; i++) {
+            genMessage(randMessage(args));
+            sendByTCP();
+        }
+        long end = System.currentTimeMillis();
+        int avg = (int) (end - start) / 10000;
+        System.out.println("The average latency is " + avg + " ms.");
+    }
+
+    private static String[] randMessage(String[] args) {
+        String[] newArgs = new String[5];
+        newArgs[0] = args[0];
+        newArgs[1] = args[1];
+        newArgs[2] = args[2];
+        newArgs[3] = genKey();
+        newArgs[4] = genVal();
+        return newArgs;
+    }
+
+    private static String genKey() {
+        String[] pool = {"j", "e", "c", "9", "c"};
+        int randIndex = (int) (Math.random() * 10) % 5;
+        int randFold = (int) (Math.random() * 64);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < randFold; i++) {
+            sb.append(pool[randIndex]);
+        }
+        return sb.toString();
+    }
+
+    private static String genVal() {
+        String[] pool = {"jfei2", "e94jf", "chfk3", "930fk", "chbei"};
+        int randIndex = (int) (Math.random() * 10) % 5;
+        int randFold = (int) (Math.random() * 100);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < randFold; i++) {
+            sb.append(pool[randIndex]);
+        }
+        return sb.toString();
+    }
+
+    private static void throughput() {
+
     }
 
     private static void sendByTCP() {
-        //String[] strs = message.split("\\r?\\n");
+        String[] strs = message.split("\0");
         try {
             Socket socket = new Socket(host, portnum4T);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String answer = null;
-            //out.println(strs[0]);
+            int count,i;
+            out.println(strs[0]);
             switch (op) {
                 case "set":
-                    //out.println(strs[1]);
-                    //out.println(strs[2]);
-                    out.println(message);
+                    out.println(strs[1]);
+                    count = Integer.parseInt(strs[1]);
+                    for (i = 0; i < count; i++) {
+                        out.println(strs[2 + 2 * i]);
+                        out.println(strs[3 + 2 * i]);
+                    }
+                    //out.println(message);
                     answer = in.readLine();
                     System.out.println(answer);
                     break;
 
                 case "get":
-                    //out.println(strs[1]);
-                    out.println(message);
-                    answer = in.readLine();
-                    analyAnswer(answer);
+                    out.println(strs[1]);
+                    count = Integer.parseInt(strs[1]);
+                    for (i = 0; i < count; i++) {
+                        out.println(strs[2 + i]);
+                    }
+                    for (i = 0; i < count; i++) {
+                        answer = in.readLine();
+                        System.out.println(answer);
+                    }
+                    //out.println(message);
+                    //answer = in.readLine();
+                    //analyAnswer(answer);
                     //System.out.println(answer);
                     break;
 
@@ -143,21 +154,6 @@ public class TestClient {
         } catch (IOException e) {
             System.err.println("Sending Failed!");
         }
-    }
-
-    private static void showUsage() {
-        String s = "usage: java Client <server> <protocol> <operation> <key> <value>" + System.lineSeparator() + System.lineSeparator() +
-                "<server>" + System.lineSeparator() +
-                "should be the IP address of the server" + System.lineSeparator() + System.lineSeparator() +
-                "<protocol>" + System.lineSeparator() +
-                "should be \"--TCP\" or \"-t\" or \"--UDP\" or \"-u\"" + System.lineSeparator() + System.lineSeparator() +
-                "<operation>" + System.lineSeparator() +
-                "should be \"SET\" or \"GET\" or \"STATS\"" + System.lineSeparator() + System.lineSeparator() +
-                "<key>" + System.lineSeparator() +
-                "should be a continuous string without any space or carriage return. There can be multiple keys." + System.lineSeparator() + System.lineSeparator() +
-                "<value>" + System.lineSeparator() +
-                "should be a continuous string without any space or carriage return. There can be multiple vaules corresponding to keys, and the format should be <key> followed by <value>, followed by next <key>, followed by next <value>, and so forth.";
-        System.out.println(s);
     }
 
 
