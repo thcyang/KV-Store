@@ -22,6 +22,7 @@ public class Client {
     private static int portnum4U = 5555;
     private static int portnum4T = 5556;
     private static String message;
+    //private static final String Separator = "//r//n";
 
     private static void setHost(String host) {
         Client.host = host;
@@ -91,28 +92,28 @@ public class Client {
     }
 
     private static void sendByTCP() {
-        //String[] strs = message.split("\\r?\\n");
+        String[] strs = message.split("\0");
         try {
             Socket socket = new Socket(host, portnum4T);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String answer = null;
-            //out.println(strs[0]);
+            out.println(strs[0]);
             switch (op) {
                 case "set":
-                    //out.println(strs[1]);
-                    //out.println(strs[2]);
-                    out.println(message);
+                    out.println(strs[1]);
+                    out.println(strs[2]);
+                    //out.println(message);
                     answer = in.readLine();
                     System.out.println(answer);
                     break;
 
                 case "get":
-                    //out.println(strs[1]);
-                    out.println(message);
+                    out.println(strs[1]);
+                    //out.println(message);
                     answer = in.readLine();
-                    analyAnswer(answer);
-                    //System.out.println(answer);
+                    //analyAnswer(answer);
+                    System.out.println(answer);
                     break;
 
                 case "stats":
@@ -209,10 +210,10 @@ public class Client {
 
     private static void analyAnswer(String answer) {
         int count, i;
-        String[] strs = answer.split("\0");
-        count = Integer.parseInt(strs[0]);
+        String[] ansStrs = answer.split("\0");
+        count = Integer.parseInt(ansStrs[0]);
         for (i = 1; i <= count; i++) {
-            System.out.println(strs[i]);
+            System.out.println(ansStrs[i]);
         }
     }
 }
