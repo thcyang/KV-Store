@@ -40,38 +40,39 @@ public class TCPHandler extends Handler implements Runnable {
             String op = in.readLine();
             switch (op) {
                 case "set":
-                    /**
-                    count = Integer.parseInt(strs[1]);
+                    
+                    count = Integer.parseInt(in.readLine());
                     for (i = 0; i < count; i++) {
-                        key = strs[2 + 2 * i];
-                        value = strs[3 + 2 * i];
+                        key = in.readLine();
+                        value = in.readLine();
                         set(key, value);
                     }
-                    **/
-                    key = in.readLine();
-                    value = in.readLine();
-                    set(key, value);
+                    
+                    //key = in.readLine();
+                    //value = in.readLine();
+                    //set(key, value);
                     out.println("Set Success.");
                     break;
 
                 case "get":
-                    key = in.readLine();
-                    value = get(key);
-                    /**
-                    sb = new StringBuilder(strs[1]);
-                    count = Integer.parseInt(strs[1]);
+                    //key = in.readLine();
+                    //value = get(key);
+                    
+                    //sb = new StringBuilder(strs[1]);
+                    count = Integer.parseInt(in.readLine());
                     for (i = 0; i < count; i++) {
-                        sb.append("\0Value for \"");
-                        key = strs[2 + i];
-                        sb.append(key);
+                        //sb.append("\0Value for \"");
+                        key = in.readLine();
+                        //sb.append(key);
                         value = get(key);
-                        sb.append("\" is: ");
-                        sb.append(value);
+                        //sb.append("\" is: ");
+                        //sb.append(value);
+                        out.println("Value for \""+key+"\" is: "+value);
                     }
-                    String mess = sb.toString();
-                    **/
+                    //String mess = sb.toString();
+                    
                     //out.println(mess);
-                    out.println("Value for \""+key+"\" is: "+value);
+                    //out.println("Value for \""+key+"\" is: "+value);
                     break;
 
                 case "stats":

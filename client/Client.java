@@ -98,11 +98,16 @@ public class Client {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String answer = null;
+            int count,i;
             out.println(strs[0]);
             switch (op) {
                 case "set":
                     out.println(strs[1]);
-                    out.println(strs[2]);
+                    count = Integer.parseInt(strs[1]);
+                    for (i = 0; i < count; i++) {
+                        out.println(strs[2 + 2 * i]);
+                        out.println(strs[3 + 2 * i]);
+                    }
                     //out.println(message);
                     answer = in.readLine();
                     System.out.println(answer);
@@ -110,10 +115,18 @@ public class Client {
 
                 case "get":
                     out.println(strs[1]);
+                    count = Integer.parseInt(strs[1]);
+                    for (i = 0; i < count; i++) {
+                        out.println(strs[2 + i]);
+                    }
+                    for (i = 0; i < count; i++) {
+                        answer = in.readLine();
+                        System.out.println(answer);
+                    }
                     //out.println(message);
-                    answer = in.readLine();
+                    //answer = in.readLine();
                     //analyAnswer(answer);
-                    System.out.println(answer);
+                    //System.out.println(answer);
                     break;
 
                 case "stats":
@@ -168,9 +181,9 @@ public class Client {
 
 
     /*message String form:
-       set: operation+"\\r?\\n"+count+"\\r?\\n"+key+"\\r?\\n"+value+"\\r?\\n"+key+....
-       get: operation+"\\r?\\n"+count+"\\r?\\n"+key+"\\r?\\n"+key+....
-       stats: operation+"\\r?\\n"
+       set: operation+"\0"+count+"\0"+key+"\0"+value+"\0"+key+....
+       get: operation+"\0"+count+"\0"+key+"\0"+key+....
+       stats: operation+"\0"
     */
     private static void genMessage(String[] args) {
         StringBuilder sb = new StringBuilder(args[2]);
