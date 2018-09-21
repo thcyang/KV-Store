@@ -1,11 +1,14 @@
 import java.io.IOException;
 import java.net.ServerSocket;
+
+import handler.LRUCache;
 import handler.TCPHandler;
 
 public class TCPHandlerFactory implements Runnable {
     private static TCPHandlerFactory ourInstance = new TCPHandlerFactory();
     private boolean listenning = true;
     private int port = 5556;
+    private LRUCache<String, String> lruCache;
 
     private ServerSocket serverSocket;
 
@@ -14,6 +17,10 @@ public class TCPHandlerFactory implements Runnable {
 
     public static TCPHandlerFactory getInstance() {
         return ourInstance;
+    }
+
+    public void setLruCache(LRUCache<String, String> lruCache) {
+        this.lruCache = lruCache;
     }
 
     public void run() {
@@ -29,7 +36,7 @@ public class TCPHandlerFactory implements Runnable {
         }
         while (listenning) {
             try {
-                TCPHandler tcp = new TCPHandler(serverSocket.accept());
+                TCPHandler tcp = new TCPHandler(lruCache, serverSocket.accept());
                 new Thread(tcp).start();
             } catch (IOException e) {
                 e.printStackTrace();

@@ -9,7 +9,8 @@ import java.net.Socket;
 public class TCPHandler extends Handler implements Runnable {
     private Socket socket;
 
-    public TCPHandler(Socket socket) {
+    public TCPHandler(LRUCache<String, String> lruCache, Socket socket) {
+        super(lruCache);
         this.socket = socket;
     }
 

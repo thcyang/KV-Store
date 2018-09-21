@@ -1,6 +1,7 @@
 import java.net.*;
 import java.io.*;
 
+import handler.LRUCache;
 import handler.UDPHandler;
 
 public class UDPHandlerFactory implements Runnable {
@@ -8,12 +9,17 @@ public class UDPHandlerFactory implements Runnable {
     private boolean listenning = true;
     private int port = 5555;
     private DatagramSocket socket;
+    private LRUCache<String, String> lruCache;
 
     private UDPHandlerFactory() {
     }
 
     public static UDPHandlerFactory getInstance() {
         return ourInstance;
+    }
+
+    public void setLruCache(LRUCache<String, String> lruCache) {
+        this.lruCache = lruCache;
     }
 
     public void run() {
@@ -31,7 +37,7 @@ public class UDPHandlerFactory implements Runnable {
                 byte[] me = new byte[1024 * 64];
                 DatagramPacket packet = new DatagramPacket(me, me.length);
                 socket.receive(packet);
-                UDPHandler udp = new UDPHandler(packet);
+                UDPHandler udp = new UDPHandler(lruCache, packet);
                 new Thread(udp).start();
 
                 /****

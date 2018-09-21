@@ -1,7 +1,11 @@
 package handler;
 
 public abstract class Handler {
-    private LRUCache<String, String> lruCache = new LRUCache<>(20);
+    private LRUCache<String, String> lruCache;
+
+    public Handler(LRUCache<String, String> lruCache) {
+        this.lruCache = lruCache;
+    }
 
     void set(String key, String value) {
         lruCache.set(key, value);
@@ -9,8 +13,9 @@ public abstract class Handler {
     }
 
     String get(String key) {
+        String str = lruCache.get(key);
         lruCache.logPrint();
-        return lruCache.get(key);
+        return str;
     }
 
     int stats() {

@@ -6,7 +6,8 @@ import java.io.*;
 public class UDPHandler extends Handler implements Runnable {
     private DatagramPacket packet;
 
-    public UDPHandler(DatagramPacket packet) {
+    public UDPHandler(LRUCache<String, String> lruCache, DatagramPacket packet) {
+        super(lruCache);
         this.packet = packet;
     }
 
