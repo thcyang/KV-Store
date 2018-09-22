@@ -6,7 +6,7 @@ import java.util.TimerTask;
 
 import handler.LRUCache;
 import handler.UDPHandler;
-
+//Create thread for UDP
 public class UDPHandlerFactory implements Runnable {
     private static UDPHandlerFactory ourInstance = new UDPHandlerFactory();
     private boolean listenning = true;
@@ -45,7 +45,6 @@ public class UDPHandlerFactory implements Runnable {
 	    long period = 1000L;
 	    timer.scheduleAtFixedRate(repeatedTask, delay, period);
 	}
-	// TODO
 	// This while loop is responsible for establishing
 	// new connection from different clients
 	try {
@@ -62,33 +61,6 @@ public class UDPHandlerFactory implements Runnable {
 		UDPHandler udp = new UDPHandler(lruCache, packet);
 		new Thread(udp).start();
 		count++;
-
-		/****
-		 * byte[] o = new byte[1024]; byte[] buf = null; DatagramPacket packet4op = new
-		 * DatagramPacket(o, o.length); socket.receive(packet4op); String op = new
-		 * String(packet4op.getData(), 0, packet4op.getLength()); InetAddress addr =
-		 * packet4op.getAddress(); int portnum = packet4op.getPort();
-		 * 
-		 * switch (op){ case "set": byte[] buf4k = new byte[1024]; byte[] buf4v = new
-		 * byte[1024]; DatagramPacket packet4k = new DatagramPacket(buf4k,
-		 * buf4k.length); DatagramPacket packet4v = new DatagramPacket(buf4v,
-		 * buf4v.length); socket.receive(packet4k); socket.receive(packet4v); String key
-		 * = new String(packet4k.getData(), 0, packet4k.getLength()); String value = new
-		 * String(packet4v.getData(), 0, packet4v.getLength()); map.put(key,value); buf
-		 * = "Set Success.".getBytes(); DatagramPacket pack = new DatagramPacket(buf,
-		 * buf.length, addr, portnum); socket.send(pack); break;
-		 * 
-		 * case "get": byte[] buf4g = new byte[1024]; DatagramPacket packet4g = new
-		 * DatagramPacket(buf4g, buf4g.length); socket.receive(packet4g); String key4g =
-		 * new String(packet4g.getData(), 0, packet4g.getLength()); String v =
-		 * map.get(key4g); String s = "Value for \"" +key4g+ "\" is \"" +v+"\"."; buf =
-		 * s.getBytes(); DatagramPacket pack2 = new DatagramPacket(buf, buf.length,
-		 * addr, portnum); socket.send(pack2); break;
-		 * 
-		 * case "stats": String str = "Count of objects currently stored in the KV
-		 * store: "+ map.size(); buf = str.getBytes(); DatagramPacket pack3 = new
-		 * DatagramPacket(buf, buf.length, addr, portnum); socket.send(pack3); break; }
-		 ******/
 	    } catch (IOException e) {
 		e.printStackTrace();
 	    }

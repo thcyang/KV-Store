@@ -16,13 +16,7 @@ public class TestClient {
     private static void setOp(String op) {
         TestClient.op = op.toLowerCase();
     }
-
-    /**
-     * java client localhost --TCP set latency
-     * java client localhost --TCP get latency
-     *
-     * java client localhost --TCP set key value
-     * */
+    
     public static void main(String[] args) {
         setHost(args[0]);
         setOp(args[2]);
@@ -45,7 +39,7 @@ public class TestClient {
             sendByTCP();
         }
         long end = System.nanoTime();
-        long avg =  (end - start) / 10000;
+        long avg = (end - start) / 10000;
         System.out.println("The average latency is " + avg + " ns.");
     }
 
@@ -100,7 +94,7 @@ public class TestClient {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String answer = null;
-            int count,i;
+            int count, i;
             out.println(strs[0]);
             switch (op) {
                 case "set":

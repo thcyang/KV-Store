@@ -90,7 +90,7 @@ public class Client {
                 showUsage();
         }
     }
-
+        // Establish connection for TCP.
     private static void sendByTCP() {
         String[] strs = message.split("\\r\\n");
         try {
@@ -108,7 +108,6 @@ public class Client {
                         out.println(strs[2 + 2 * i]);
                         out.println(strs[3 + 2 * i]);
                     }
-                    //out.println(message);
                     answer = in.readLine();
                     System.out.println(answer);
                     break;
@@ -123,10 +122,6 @@ public class Client {
                         answer = in.readLine();
                         System.out.println(answer);
                     }
-                    //out.println(message);
-                    //answer = in.readLine();
-                    //analyAnswer(answer);
-                    //System.out.println(answer);
                     break;
 
                 case "stats":
@@ -140,7 +135,7 @@ public class Client {
             System.err.println("Sending Failed!");
         }
     }
-
+        // Send and receive packet by UDP
     private static void sendByUDP() {
         try {
             DatagramSocket socket = new DatagramSocket();
@@ -179,12 +174,6 @@ public class Client {
         System.out.println(s);
     }
 
-
-    /*message String form:
-       set: operation+"\0"+count+"\0"+key+"\0"+value+"\0"+key+....
-       get: operation+"\0"+count+"\0"+key+"\0"+key+....
-       stats: operation+"\0"
-    */
     private static void genMessage(String[] args) {
         StringBuilder sb = new StringBuilder(args[2]);
         int count, i;

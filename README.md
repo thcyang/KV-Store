@@ -39,25 +39,30 @@ Extra Features:
  should be a continuous string without any space or carriage return. There can be multiple vaules corresponding to keys, and the format should be `<key>` followed by `<value>`, followed by next `<key>`, followed by next `<value>`, and so forth.  
 
  ## Protocol Description
-  protocol: 
-  message String form(from Client to Server):
-    set: operation+"\0"+count+"\0"+key+"\0"+value+"\0"+key+....
-    get: operation+"\0"+count+"\0"+key+"\0"+key+....
-    stats: operation+"\0"
+  Message for Requests (from Client to Server):  
+    SET: operator + "\r\n" + count + "\r\n" + key + "\r\n" + value + "\r\n" + key + ....
+    get: operator + "\r\n" + count + "\r\n" + key + "\r\n" + key +....
+    stats: operator
     
-  answer String form(from Server to Client):
-    set: answer
-    get: count+"\0"+answer+"\0"+answer+....
-    stats: answer
-
  ## Performance Evaluation  
  ### Experimental Results
- - TCP maxThroughput for set operation: 1768  
-    our server can handle 1768 set requests per second.  
- - The average latency for set is 767192 ns.  
- - TCP maxThroughput for get operation: 1863  
-    out server can handle  1863 get requests per second.  
- - The average latency is 831922 ns.  
+ - TCP maximum throughput for SET operation: 
+    our server can handle 1768 SET requests per second.
+ - The average latency for SET operation is 767192 ns. 
     
-   
+      
+ - TCP maximum throughput for GET operation:  
+    out server can handle 1863 GET requests per second.  
+ - The average latency for GET operation is 831922 ns.  
+    
+## Usage for telnet
+The TCP port number for our server is 5556.  
+First of all, to connect our server by telnet, input "telnet localhost 5556", then input "<operation>". Input "<count of the key you want to get or set>" as a new line. Input "<key>" and "<value>" one by one. Each key and value should be a new line.  
+For example:  
+set
+2  
+key1  
+value1  
+key2  
+value2  
    
