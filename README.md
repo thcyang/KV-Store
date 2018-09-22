@@ -46,14 +46,14 @@ Extra Features:
     
  ## Performance Evaluation  
  ### Experimental Results
- - TCP maximum throughput for SET operation: 
-    our server can handle 1768 SET requests per second.
- - The average latency for SET operation is 767192 ns. 
+ - TCP maximum throughput for SET operation:  
+    Our server can handle 1768 SET requests per second.  
+  The average latency for SET operation is 767192 ns. 
     
       
  - TCP maximum throughput for GET operation:  
-    out server can handle 1863 GET requests per second.  
- - The average latency for GET operation is 831922 ns.  
+    Our server can handle 1863 GET requests per second.  
+ The average latency for GET operation is 831922 ns.  
     
 ## Usage for telnet
 The TCP port number for our server is 5556.  
