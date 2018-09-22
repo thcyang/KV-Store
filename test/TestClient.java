@@ -37,14 +37,14 @@ public class TestClient {
     }
 
     private static void latency(String[] args) {
-        long start = System.currentTimeMillis();
+        long start = System.nanoTime();
         for (int i = 0; i < 10000; i++) {
             genMessage(randMessage(args));
             sendByTCP();
         }
-        long end = System.currentTimeMillis();
-        int avg = (int) (end - start) / 10000;
-        System.out.println("The average latency is " + avg + " ms.");
+        long end = System.nanoTime();
+        long avg =  (end - start) / 10000;
+        System.out.println("The average latency is " + avg + " ns.");
     }
 
     private static String[] randMessage(String[] args) {
@@ -60,7 +60,7 @@ public class TestClient {
     private static String genKey() {
         String[] pool = {"j", "e", "c", "9", "c"};
         int randIndex = (int) (Math.random() * 10) % 5;
-        int randFold = (int) (Math.random() * 64);
+        int randFold = (int) (Math.random() * 64) + 1;
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < randFold; i++) {
             sb.append(pool[randIndex]);
@@ -71,7 +71,7 @@ public class TestClient {
     private static String genVal() {
         String[] pool = {"jfei2", "e94jf", "chfk3", "930fk", "chbei"};
         int randIndex = (int) (Math.random() * 10) % 5;
-        int randFold = (int) (Math.random() * 100);
+        int randFold = (int) (Math.random() * 100) + 1;
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < randFold; i++) {
             sb.append(pool[randIndex]);
