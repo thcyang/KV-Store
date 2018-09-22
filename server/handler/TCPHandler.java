@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ * This class is thread for TCP
+ * */
 public class TCPHandler extends Handler implements Runnable {
     private Socket socket;
 

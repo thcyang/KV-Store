@@ -3,6 +3,9 @@ package handler;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * This Class is for the eviction policy (LRU)
+ * */
 public class LRUCache<KeyType, ValueType> {
     private Map<KeyType, DLNode> map = new ConcurrentHashMap<>();
     private DLNode head;

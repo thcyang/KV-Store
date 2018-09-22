@@ -174,6 +174,11 @@ public class Client {
         System.out.println(s);
     }
 
+    /**
+     * generate message for protocol
+     * the count phrase in the protocol is used for indicate the number of pairs of keys and values
+     * this method supports multi-set and multi-get
+     * */
     private static void genMessage(String[] args) {
         StringBuilder sb = new StringBuilder(args[2]);
         int count, i;

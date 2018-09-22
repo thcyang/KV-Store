@@ -6,7 +6,9 @@ import java.util.TimerTask;
 import handler.LRUCache;
 import handler.TCPHandler;
 
-//Create thread for TCP
+/**
+ * Create multi-thread for TCP
+ * */
 public class TCPHandlerFactory implements Runnable {
     private static TCPHandlerFactory ourInstance = new TCPHandlerFactory();
     private boolean listenning = true;

@@ -3,6 +3,9 @@ package handler;
 import java.net.*;
 import java.io.*;
 
+/**
+ * This Class is thread for UDP
+ * */
 public class UDPHandler extends Handler implements Runnable {
     private DatagramPacket packet;
 

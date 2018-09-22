@@ -16,7 +16,7 @@ public class TestClient {
     private static void setOp(String op) {
         TestClient.op = op.toLowerCase();
     }
-    
+
     public static void main(String[] args) {
         setHost(args[0]);
         setOp(args[2]);
