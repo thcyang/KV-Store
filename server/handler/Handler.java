@@ -1,6 +1,6 @@
 package handler;
 
-public abstract class Handler {
+public class Handler {
     private LRUCache<String, String> lruCache;
 
     public Handler(LRUCache<String, String> lruCache) {

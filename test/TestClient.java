@@ -83,7 +83,12 @@ public class TestClient {
     private static void throughput(String[] args) {
         genMessage(randMessage(args));
         while (true) {
-            new Thread(TestClient::sendByTCP).start();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    sendByTCP();
+                }
+            }).start();
         }
     }
 
