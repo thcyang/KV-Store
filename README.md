@@ -50,4 +50,14 @@ Extra Features:
     get: count+"\0"+answer+"\0"+answer+....
     stats: answer
 
- ## Performance Evaluation
+ ## Performance Evaluation  
+ ### Experimental Results
+ - TCP maxThroughput for set operation: 1768  
+    our server can handle 1768 set requests per second.  
+ - The average latency for set is 767192 ns.  
+ - TCP maxThroughput for get operation: 1863  
+    out server can handle  1863 get requests per second.  
+ - The average latency is 831922 ns.  
+    
+   
+   
