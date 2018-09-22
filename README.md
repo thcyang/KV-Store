@@ -59,7 +59,7 @@ Extra Features:
 The TCP port number for our server is 5556.  
 First of all, to connect our server by telnet, input "telnet localhost 5556", then input "<operation>". Input "<count of the key you want to get or set>" as a new line. Input "<key>" and "<value>" one by one. Each key and value should be a new line.  
 For example:  
-set
+set  
 2  
 key1  
 value1  
