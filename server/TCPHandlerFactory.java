@@ -9,6 +9,7 @@ import handler.TCPHandler;
 public class TCPHandlerFactory implements Runnable {
     private static TCPHandlerFactory ourInstance = new TCPHandlerFactory();
     private boolean listenning = true;
+    private boolean bTesting = true;
     private int port = 5556;
     private LRUCache<String, String> lruCache;
 
@@ -21,26 +22,29 @@ public class TCPHandlerFactory implements Runnable {
     }
 
     public static TCPHandlerFactory getInstance() {
-        return ourInstance;
+	return ourInstance;
     }
 
     public void setLruCache(LRUCache<String, String> lruCache) {
-        this.lruCache = lruCache;
+	this.lruCache = lruCache;
     }
 
     public void run() {
-	TimerTask repeatedTask = new TimerTask() {
-	    public void run() {
-		maxThroughput = Math.max(maxThroughput, count);
-		System.out.println("TCP maxThroughput: " + maxThroughput);
-		count = 0;
-	    }
-	};
-	Timer timer = new Timer("Timer");
-	long delay = 10L;
-	long period = 1000L;
-	timer.scheduleAtFixedRate(repeatedTask, delay, period);
-
+	if (bTesting) {
+	    TimerTask repeatedTask = new TimerTask() {
+		public void run() {
+		    if (count > maxThroughput) {
+			maxThroughput = count;
+			System.out.println("TCP maxThroughput: " + maxThroughput);
+		    }
+		    count = 0;
+		}
+	    };
+	    Timer timer = new Timer("Timer");
+	    long delay = 10L;
+	    long period = 1000L;
+	    timer.scheduleAtFixedRate(repeatedTask, delay, period);
+	}
 	try {
 	    serverSocket = new ServerSocket(port);
 	    System.out.println("Waiting for connections for TCP.");
