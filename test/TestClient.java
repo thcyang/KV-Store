@@ -4,7 +4,6 @@ import java.io.*;
 public class TestClient {
     private static String host;
     private static String op;
-    private static int portnum4U = 5555;
     private static int portnum4T = 5556;
     private static String message;
 
@@ -13,7 +12,7 @@ public class TestClient {
     }
 
     private static void setOp(String op) {
-        TestClient.op = op;
+        TestClient.op = op.toLowerCase();
     }
 
     /**
@@ -30,9 +29,10 @@ public class TestClient {
                 latency(args);
                 break;
             case "throughput":
-                throughput();
+                throughput(args);
                 break;
             default:
+                showUsage();
         }
     }
 
@@ -79,8 +79,11 @@ public class TestClient {
         return sb.toString();
     }
 
-    private static void throughput() {
-
+    private static void throughput(String[] args) {
+        genMessage(randMessage(args));
+        while (true) {
+            new Thread(TestClient::sendByTCP).start();
+        }
     }
 
     private static void sendByTCP() {
@@ -133,29 +136,6 @@ public class TestClient {
         }
     }
 
-    private static void sendByUDP() {
-        try {
-            DatagramSocket socket = new DatagramSocket();
-            byte[] me = message.getBytes();
-            byte[] buf = new byte[1024 * 64];
-            DatagramPacket packet = new DatagramPacket(me, me.length, InetAddress.getByName(host), portnum4U);
-            DatagramPacket rece = new DatagramPacket(buf, buf.length);
-            socket.send(packet);
-            socket.receive(rece);
-            String str = new String(rece.getData(), 0, rece.getLength());
-
-            if (op.equals("get")) {
-                analyAnswer(str);
-            } else {
-                System.out.println(str);
-            }
-
-            socket.close();
-        } catch (IOException e) {
-            System.err.println("Sending Failed!");
-        }
-    }
-
 
     /*message String form:
        set: operation+"\\r?\\n"+count+"\\r?\\n"+key+"\\r?\\n"+value+"\\r?\\n"+key+....
@@ -198,13 +178,13 @@ public class TestClient {
         }
     }
 
-    private static void analyAnswer(String answer) {
-        int count, i;
-        String[] strs = answer.split("\0");
-        count = Integer.parseInt(strs[0]);
-        for (i = 1; i <= count; i++) {
-            System.out.println(strs[i]);
-        }
+    private static void showUsage() {
+        String s = "usage: java TestClient <Server> <-t | --TCP> <operation> <test name>" + System.lineSeparator() + System.lineSeparator() +
+                "<protocol> should always be -t or --TCP, since only TCP uses socket which we are required to test." + System.lineSeparator() +
+                "<test name> could either be latency or throughput.";
+        System.out.println(s);
+        System.out.println();
+        System.out.println();
     }
 }
 
