@@ -17,7 +17,7 @@ public class UDPHandler extends Handler implements Runnable {
             int portnum = packet.getPort();
             int i, count;
             String message = new String(packet.getData(), 0, packet.getLength());
-            String[] strs = message.split("\0");
+            String[] strs = message.split("\r\n");
             String key = null;
             String value = null;
             byte[] buf = null;
@@ -40,7 +40,7 @@ public class UDPHandler extends Handler implements Runnable {
                     count = Integer.parseInt(strs[1]);
                     StringBuilder sb = new StringBuilder(strs[1]);
                     for (i = 0; i < count; i++) {
-                        sb.append("\0Value for \"");
+                        sb.append("\r\nValue for \"");
                         key = strs[2 + i];
                         sb.append(key);
                         value = get(key);

@@ -7,6 +7,7 @@ public class TestClient {
     private static String op;
     private static int portnum4T = 5556;
     private static String message;
+    private static final String Separator = "\r\n";
 
     private static void setHost(String host) {
         TestClient.host = host;
@@ -93,7 +94,7 @@ public class TestClient {
     }
 
     private static void sendByTCP() {
-        String[] strs = message.split("\0");
+        String[] strs = message.split("\\r\\n");
         try {
             Socket socket = new Socket(host, portnum4T);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -148,32 +149,33 @@ public class TestClient {
        get: operation+"\\r?\\n"+count+"\\r?\\n"+key+"\\r?\\n"+key+....
        stats: operation+"\\r?\\n"
     */
+
     private static void genMessage(String[] args) {
         StringBuilder sb = new StringBuilder(args[2]);
         int count, i;
         switch (args[2]) {
             case "set":
                 count = (args.length - 3) / 2;
-                sb.append("\0");
+                sb.append(Separator);
                 sb.append(count);
                 for (i = 0; i < count; i++) {
-                    sb.append("\0");
+                    sb.append(Separator);
                     sb.append(args[3 + 2 * i]);
-                    sb.append("\0");
+                    sb.append(Separator);
                     sb.append(args[4 + 2 * i]);
                 }
-                sb.append("\0");
+                sb.append(Separator);
                 message = sb.toString();
                 break;
             case "get":
                 count = (args.length - 3);
-                sb.append("\0");
+                sb.append(Separator);
                 sb.append(count);
                 for (i = 0; i < count; i++) {
-                    sb.append("\0");
+                    sb.append(Separator);
                     sb.append(args[3 + i]);
                 }
-                sb.append("\0");
+                sb.append(Separator);
                 message = sb.toString();
                 break;
             case "stats":

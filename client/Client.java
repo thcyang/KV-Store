@@ -22,7 +22,7 @@ public class Client {
     private static int portnum4U = 5555;
     private static int portnum4T = 5556;
     private static String message;
-    //private static final String Separator = "//r//n";
+    private static final String Separator = "\r\n";
 
     private static void setHost(String host) {
         Client.host = host;
@@ -92,7 +92,7 @@ public class Client {
     }
 
     private static void sendByTCP() {
-        String[] strs = message.split("\0");
+        String[] strs = message.split("\\r\\n");
         try {
             Socket socket = new Socket(host, portnum4T);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -191,26 +191,26 @@ public class Client {
         switch (args[2]) {
             case "set":
                 count = (args.length - 3) / 2;
-                sb.append("\0");
+                sb.append(Separator);
                 sb.append(count);
                 for (i = 0; i < count; i++) {
-                    sb.append("\0");
+                    sb.append(Separator);
                     sb.append(args[3 + 2 * i]);
-                    sb.append("\0");
+                    sb.append(Separator);
                     sb.append(args[4 + 2 * i]);
                 }
-                sb.append("\0");
+                sb.append(Separator);
                 message = sb.toString();
                 break;
             case "get":
                 count = (args.length - 3);
-                sb.append("\0");
+                sb.append(Separator);
                 sb.append(count);
                 for (i = 0; i < count; i++) {
-                    sb.append("\0");
+                    sb.append(Separator);
                     sb.append(args[3 + i]);
                 }
-                sb.append("\0");
+                sb.append(Separator);
                 message = sb.toString();
                 break;
             case "stats":
@@ -223,7 +223,7 @@ public class Client {
 
     private static void analyAnswer(String answer) {
         int count, i;
-        String[] ansStrs = answer.split("\0");
+        String[] ansStrs = answer.split(Separator);
         count = Integer.parseInt(ansStrs[0]);
         for (i = 1; i <= count; i++) {
             System.out.println(ansStrs[i]);
