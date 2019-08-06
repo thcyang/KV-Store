@@ -8,7 +8,7 @@ Assumptions about the keys and values in the system:
 Support the following operations:  
  - SET adds a key and value to the server  
  - GET returns a value to the client for the requested key  
- - STATS returns a count of objects currently stored in the KV store. Add some extra features.  
+ - STATS returns a count of objects currently stored in the KV store.    
 
 # KV Store
 
