@@ -1,5 +1,14 @@
 # Discription
+A client and a server wrote in Java that supports the Basic GW-KV protocol. Use an ASCII based protocol for  KV Store.  
 
+Assumptions about the keys and values in the system:  
+ - Keys are strings composed of only letters and numbers. Keys are at most 64 characters long.  
+ - Values are strings composed of any ASCII symbols except for new line characters. Values are at most 1KB in size.  
+ 
+Support the following operations:  
+ - SET adds a key and value to the server  
+ - GET returns a value to the client for the requested key  
+ - STATS returns a count of objects currently stored in the KV store. Add some extra features.  
 
 # KV Store
 
